@@ -1,0 +1,19 @@
+name: ""
+level: 1
+master: ""
+position:
+  x: 0
+  y: 0
+  z: 0
+  level: ""
+players: {}
+broadcastMessage: ""
+playerMaxSize: 5
+group:
+  addplayer: 2
+  removeplayer: 2
+  sociatyfight: 3
+  sociatybroadcast: 4
+  tpAllplayer: 5
+  setjoinmessage: 3
+
