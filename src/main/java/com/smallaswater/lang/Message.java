@@ -22,6 +22,16 @@ import com.smallaswater.SociatyMainClass;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 
+/**
+ * 语言文件
+ * 在lang/xxx.lang中
+ * 按example_lang:xxxxx
+ * 写入语言文本
+ * 调用的时候用
+ * Message.getString("example_lang")即可
+ * @作者 Zao_hon
+ *
+ */
 public class Message {
 	private static SociatyMainClass plugin;
 	private static String PREFIX = "[SociatyMainClass]";

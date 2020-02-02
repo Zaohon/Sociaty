@@ -5,7 +5,11 @@ import cn.nukkit.level.Position;
 import com.smallaswater.events.PlayerJoinSociatyEvent;
 import com.smallaswater.players.PlayerClass;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Administrator
@@ -22,9 +26,13 @@ public class Sociaty {
 	 */
 	private int level;
 	/**
-	 * 公会坐标
+	 * 公会核心坐标
 	 */
 	private Position position;
+	/**
+	 * 公会传送点坐标
+	 */
+	private Position homePosition;
 
 	/**
 	 * 公会成员上限
@@ -47,12 +55,17 @@ public class Sociaty {
 	 * 公告
 	 */
 	private String broadcastMessage = "";
-
+	
+	public Sociaty(String name,String master,Position position) {
+		this(name,master,position,1,Group.getDefaultGroups());
+	}
+	
 	public Sociaty(String name, String master, Position position, int level, LinkedList<Group> groups) {
 		this.groups = groups;
 		this.name = name;
 		this.master = master;
 		this.position = position;
+		this.homePosition = position;
 		this.level = level;
 	}
 
@@ -94,7 +107,7 @@ public class Sociaty {
 
 	public boolean hasPermissions(PlayerClass playerClass, Group group) {
 		if (group != null) {
-			return playerClass.getGroup().isSeniorThan(group.getLevel());
+			return playerClass.getMemberLevel().seniorThan(group.getLevel());
 		}
 		return false;
 	}
@@ -106,7 +119,6 @@ public class Sociaty {
 			}
 		}
 		return null;
-
 	}
 
 	public String getMaster() {
@@ -121,9 +133,13 @@ public class Sociaty {
 		return broadcastMessage;
 	}
 
+	public void setHomePosition(Position position) {
+		this.homePosition = position;
+	}
+
 	public void runGroup(String playerName, Group group, String target) {
 		switch (group.getName()) {
-		case addPlayer:
+		case ADD_PLAYER:
 			if (!addPlayer(playerName, target)) {
 
 			}
@@ -165,7 +181,7 @@ public class Sociaty {
 			} else {
 				playerClass = getPlayerClassByName(player);
 				if (playerClass != null) {
-					if (hasPermissions(getPlayerClassByName(player), getGroupByPower(Power.addPlayer))) {
+					if (hasPermissions(getPlayerClassByName(player), getGroupByPower(Power.ADD_PLAYER))) {
 						playerClass = new PlayerClass(target, Group.DEFAULT_LEVEL, this);
 						PlayerJoinSociatyEvent event = new PlayerJoinSociatyEvent(this, playerClass);
 						Server.getInstance().getPluginManager().callEvent(event);
@@ -192,7 +208,7 @@ public class Sociaty {
 		return false;
 	}
 
-	private PlayerClass getPlayerClassByName(String name) {
+	public PlayerClass getPlayerClassByName(String name) {
 		for (PlayerClass playerClass : players) {
 			if (playerClass.getName().equals(name)) {
 				return playerClass;

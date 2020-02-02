@@ -4,7 +4,11 @@ import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-
+/**
+ * sociaty home command
+ * @author 14027
+ *
+ */
 public class HomeCommand implements ICommand{
 	private Sociaty plugin;
 	public HomeCommand(Sociaty plugin) {

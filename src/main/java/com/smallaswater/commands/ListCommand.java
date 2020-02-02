@@ -3,7 +3,11 @@ package com.smallaswater.commands;
 import com.smallaswater.SociatyMainClass;
 
 import cn.nukkit.command.CommandSender;
-
+/**
+ * sociaty list command
+ * @author 14027
+ *
+ */
 public class ListCommand implements ICommand{
 	private SociatyMainClass plugin;
 

@@ -3,7 +3,11 @@ package com.smallaswater.commands;
 import com.smallaswater.SociatyMainClass;
 
 import cn.nukkit.command.CommandSender;
-
+/**
+ * sociaty reload command
+ * @author 14027
+ *
+ */
 public class ReloadCommand implements ICommand {
 	private SociatyMainClass plugin;
 

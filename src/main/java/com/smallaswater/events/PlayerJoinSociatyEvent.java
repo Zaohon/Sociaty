@@ -6,6 +6,7 @@ import com.smallaswater.sociaty.Sociaty;
 import cn.nukkit.event.Cancellable;
 
 /**
+ * 玩家加入公会事件
  * @author Administrator
  */
 public class PlayerJoinSociatyEvent extends SociatyEvent implements Cancellable {

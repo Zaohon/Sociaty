@@ -3,7 +3,11 @@ package com.smallaswater.commands;
 import com.smallaswater.SociatyMainClass;
 
 import cn.nukkit.command.CommandSender;
-
+/**
+ * sociaty leave command
+ * @author 14027
+ *
+ */
 public class LeaveCommand implements ICommand{
 	private SociatyMainClass plugin;
 

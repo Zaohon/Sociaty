@@ -1,9 +1,20 @@
 package com.smallaswater.commands;
 
 import com.smallaswater.SociatyMainClass;
+import com.smallaswater.lang.Message;
+import com.smallaswater.players.PlayerClass;
+import com.smallaswater.sociaty.Power;
+import com.smallaswater.sociaty.Sociaty;
 
+import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 
+/**
+ * sociaty sethome command
+ * 
+ * @author 14027
+ *
+ */
 public class SetHomeCommand implements ICommand {
 	private SociatyMainClass plugin;
 
@@ -13,12 +24,12 @@ public class SetHomeCommand implements ICommand {
 
 	@Override
 	public String getName() {
-		return "create";
+		return "sethome";
 	}
 
 	@Override
 	public String[] getAliases() {
-		return new String[] { "c" };
+		return new String[] { "sh" };
 	}
 
 	@Override
@@ -48,7 +59,19 @@ public class SetHomeCommand implements ICommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		return false;
+		Player player = (Player) sender;
+		Sociaty sociaty = plugin.getDataStorager().getPlayerSociaty(player.getName());
+		if (sociaty == null) {
+			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
+			return true;
+		}
+		PlayerClass playerClass = plugin.getPlayerClass(player.getUniqueId());
+		if (sociaty.hasPermissions(playerClass, sociaty.getGroupByPower(Power.SET_HOME))) {
+			sociaty.setPosition(player.getPosition());
+		} else {
+			Message.playerSendMessage(player, Message.getString("error_player_sociaty_lack_permission"));
+		}
+		return true;
 	}
 
 }

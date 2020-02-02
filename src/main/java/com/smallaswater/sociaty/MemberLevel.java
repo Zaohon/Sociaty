@@ -1,5 +1,9 @@
 package com.smallaswater.sociaty;
-
+/**
+ * 成员等级
+ * @作者 Zao_hon
+ *
+ */
 public enum MemberLevel {
 	/**
 	 * 公会长
@@ -34,7 +38,7 @@ public enum MemberLevel {
 	/**
 	 * 权限判断
 	 */
-	public boolean isSeniorThan(MemberLevel level) {
+	public boolean seniorThan(MemberLevel level) {
 		return this.level>=level.getLevel();
 	}
 

@@ -4,7 +4,13 @@ import com.smallaswater.SociatyMainClass;
 
 import cn.nukkit.command.CommandSender;
 
-public class JoinCommand implements ICommand{
+/**
+ * social join
+ * 
+ * @作者 Zao_hon
+ *
+ */
+public class JoinCommand implements ICommand {
 	private SociatyMainClass plugin;
 
 	public JoinCommand(SociatyMainClass plugin) {
@@ -28,12 +34,12 @@ public class JoinCommand implements ICommand{
 
 	@Override
 	public String[] getUsageString(CommandSender sender) {
-		return null;
+		return new String[] { "social join <name>" };
 	}
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "加入一个公会";
 	}
 
 	@Override

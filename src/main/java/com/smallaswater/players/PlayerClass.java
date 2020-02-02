@@ -8,56 +8,56 @@ import com.smallaswater.sociaty.Sociaty;
  */
 public class PlayerClass {
 
-    /**
-     * 玩家名称
-     * */
-    private String name;
+	/**
+	 * 玩家名称
+	 */
+	private String name;
 
-    /**
-     * 玩家权限等级
-     * */
-    private MemberLevel group;
+	/**
+	 * 玩家权限等级
+	 */
+	private MemberLevel memberLevel;
 
-    /**
-     * 玩家所属公会
-     * */
-    private Sociaty sociaty;
+	/**
+	 * 玩家所属公会
+	 */
+	private Sociaty sociaty;
 
-    public PlayerClass(String name,MemberLevel group,Sociaty sociaty){
-        this.group = group;
-        this.name = name;
-        this.sociaty = sociaty;
-    }
+	public PlayerClass(String name, MemberLevel memberLevel, Sociaty sociaty) {
+		this.memberLevel = memberLevel;
+		this.name = name;
+		this.sociaty = sociaty;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public MemberLevel getGroup() {
-        return group;
-    }
+	public MemberLevel getMemberLevel() {
+		return memberLevel;
+	}
 
-    public Sociaty getSociaty() {
-        return sociaty;
-    }
+	public Sociaty getSociaty() {
+		return sociaty;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setGroup(MemberLevel group) {
-        this.group = group;
-    }
+	public void setGroup(MemberLevel memberLevel) {
+		this.memberLevel = memberLevel;
+	}
 
-    public void setSociaty(Sociaty sociaty) {
-        this.sociaty = sociaty;
-    }
+	public void setSociaty(Sociaty sociaty) {
+		this.sociaty = sociaty;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof PlayerClass){
-            return ((PlayerClass) obj).getName().equals(getName());
-        }
-        return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof PlayerClass) {
+			return ((PlayerClass) obj).getName().equals(getName());
+		}
+		return false;
+	}
 }

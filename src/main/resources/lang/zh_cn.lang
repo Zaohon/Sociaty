@@ -1,0 +1,9 @@
+command_heading=§8-----§d§l公会§8--------
+command_description_help=§2查看帮助页面
+command_no_permission=§c权限不足
+command_subcmd_invalid=§c该指令不存在
+command_error_player_only=§2该指令只能玩家使用
+error_sociaty_non_exist=§2没有找到指定的公会
+error_player_sociaty_no_found=§2该玩家没有公会
+error_player_sociaty_had_found=§2你已经有一个公会了
+sociaty_create_successfully=§2社团<sociaty>创建成功

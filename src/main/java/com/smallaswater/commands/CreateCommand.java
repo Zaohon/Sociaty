@@ -1,10 +1,16 @@
 package com.smallaswater.commands;
 
 import com.smallaswater.SociatyMainClass;
+import com.smallaswater.lang.Message;
+import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-
+/**
+ * sociaty create command
+ * @作者 Zao_hon
+ *
+ */
 public class CreateCommand implements ICommand {
 	private SociatyMainClass plugin;
 
@@ -50,13 +56,15 @@ public class CreateCommand implements ICommand {
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
-		if(args.length!=2) {
+		if (args.length != 2) {
 			return false;
 		}
 		String name = args[0];
 		String desc = args[1];
-		
-		
+		if (plugin.getDataStorager().getSociaty(name) != null) {
+			Message.playerSendMessage(player, Message.getString("error_sociaty_exist"));
+			return true;
+		}
 		return true;
 	}
 
