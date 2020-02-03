@@ -1,12 +1,9 @@
 package com.smallaswater.data;
 
-import java.util.LinkedHashMap;
-
 import com.smallaswater.players.PlayerClass;
 import com.smallaswater.sociaty.Sociaty;
 
-public interface DataStorager {
-	LinkedHashMap<String, Sociaty> getSocieties();
+public interface DataStore {
 
 	Sociaty getSociaty(String name);
 

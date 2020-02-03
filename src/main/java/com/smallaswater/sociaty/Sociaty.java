@@ -1,15 +1,20 @@
 package com.smallaswater.sociaty;
 
 import cn.nukkit.Server;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import com.smallaswater.events.PlayerJoinSociatyEvent;
 import com.smallaswater.players.PlayerClass;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * @author Administrator
@@ -32,12 +37,16 @@ public class Sociaty {
 	/**
 	 * 公会传送点坐标
 	 */
-	private Position homePosition;
+	private Location homePosition;
 
 	/**
 	 * 公会成员上限
 	 */
 	private int playerSize = 5;
+	/**
+	 * 申请成员
+	 */
+	private Set<String> applicants = new HashSet<String>();
 
 	/**
 	 * 公会成员
@@ -54,18 +63,22 @@ public class Sociaty {
 	/**
 	 * 公告
 	 */
-	private String broadcastMessage = "";
-	
-	public Sociaty(String name,String master,Position position) {
-		this(name,master,position,1,Group.getDefaultGroups());
+	private String announcement = "";
+	/**
+	 * 描述
+	 */
+	private String description = "";
+
+	public Sociaty(String name, String master, Position position) {
+		this(name, master, position, 1, Group.getDefaultGroups());
 	}
-	
+
 	public Sociaty(String name, String master, Position position, int level, LinkedList<Group> groups) {
 		this.groups = groups;
 		this.name = name;
 		this.master = master;
 		this.position = position;
-		this.homePosition = position;
+		this.homePosition = position.getLocation();
 		this.level = level;
 	}
 
@@ -89,32 +102,33 @@ public class Sociaty {
 		return position;
 	}
 
-	private boolean addPlayer(PlayerClass player) {
-		return players.add(player);
-	}
-
-	private boolean removePlayer(PlayerClass player) {
-		return players.remove(player);
+	public Set<String> getApplicants() {
+		return applicants;
 	}
 
 	public void setPosition(Position position) {
 		this.position = position;
 	}
 
+	public Location getHomePosition() {
+		return homePosition;
+	}
+
+	public void setHomePosition(Location homePosition) {
+		this.homePosition = homePosition;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	public boolean hasPermissions(PlayerClass playerClass, Group group) {
-		if (group != null) {
-			return playerClass.getMemberLevel().seniorThan(group.getLevel());
-		}
-		return false;
+	public boolean hasPermissions(PlayerClass playerClass, @NonNull Power power) {
+		return playerClass.getMemberLevel().seniorThan(getGroupByPower(power).getLevel());
 	}
 
 	public Group getGroupByPower(Power power) {
 		for (Group group : groups) {
-			if (group.getName() == power) {
+			if (group.getPower() == power) {
 				return group;
 			}
 		}
@@ -125,68 +139,41 @@ public class Sociaty {
 		return master;
 	}
 
-	public void setBroadcastMessage(String broadcastMessage) {
-		this.broadcastMessage = broadcastMessage;
+	public void setAnnouncement(String announcement) {
+		this.announcement = announcement;
 	}
 
-	public String getBroadcastMessage() {
-		return broadcastMessage;
+	public String getAnnouncement() {
+		return announcement;
 	}
 
-	public void setHomePosition(Position position) {
-		this.homePosition = position;
+	public String getDescription() {
+		return description;
 	}
 
-	public void runGroup(String playerName, Group group, String target) {
-		switch (group.getName()) {
-		case ADD_PLAYER:
-			if (!addPlayer(playerName, target)) {
-
-			}
-			break;
-		case tpAllPlayer:
-
-			break;
-		case removePlayer:
-
-			break;
-		case sociatyFight:
-
-			break;
-		case setJoinMessage:
-
-			break;
-		case sociatyBroadcast:
-
-			break;
-		default:
-			break;
-		}
-	}
-
-	public void runGroup(String playerName, Group group) {
-
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public boolean addPlayer(String player, String target) {
 		if (target != null && !"".equals(target)) {
 			PlayerClass playerClass;
 			if (player.equals(master)) {
-				playerClass = new PlayerClass(target, Group.DEFAULT_LEVEL, this);
+				playerClass = new PlayerClass(target, MemberLevel.ADMIN, this);
 				PlayerJoinSociatyEvent event = new PlayerJoinSociatyEvent(this, playerClass);
 				Server.getInstance().getPluginManager().callEvent(event);
 				if (!event.isCancelled())
-					this.addPlayer(playerClass);
+					players.add(playerClass);
 				return true;
 			} else {
 				playerClass = getPlayerClassByName(player);
 				if (playerClass != null) {
-					if (hasPermissions(getPlayerClassByName(player), getGroupByPower(Power.ADD_PLAYER))) {
+					if (hasPermissions(getPlayerClassByName(player), Power.ACCEPT_PLAYER)) {
 						playerClass = new PlayerClass(target, Group.DEFAULT_LEVEL, this);
 						PlayerJoinSociatyEvent event = new PlayerJoinSociatyEvent(this, playerClass);
 						Server.getInstance().getPluginManager().callEvent(event);
 						if (!event.isCancelled())
-							this.addPlayer(playerClass);
+							players.add(playerClass);
 						return true;
 					}
 				}

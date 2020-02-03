@@ -4,7 +4,7 @@ import cn.nukkit.plugin.PluginBase;
 
 import com.smallaswater.commands.CommandDispatcher;
 import com.smallaswater.commands.CreateCommand;
-import com.smallaswater.data.DataStorager;
+import com.smallaswater.data.DataStore;
 import com.smallaswater.players.PlayerClass;
 import com.smallaswater.sociaty.Sociaty;
 
@@ -21,7 +21,7 @@ public class SociatyMainClass extends PluginBase {
 	 */
 	private Map<UUID, PlayerClass> playerClasses = new HashMap<UUID, PlayerClass>();
 
-	private DataStorager dataStorager;
+	private DataStore dataStorager;
 
 	private CommandDispatcher commandDispatcher;
 
@@ -62,7 +62,7 @@ public class SociatyMainClass extends PluginBase {
 		return playerClasses.get(uuid);
 	}
 
-	public DataStorager getDataStorager() {
+	public DataStore getDataStorager() {
 		return dataStorager;
 	}
 

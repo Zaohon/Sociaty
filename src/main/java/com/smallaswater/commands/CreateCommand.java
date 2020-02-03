@@ -2,12 +2,16 @@ package com.smallaswater.commands;
 
 import com.smallaswater.SociatyMainClass;
 import com.smallaswater.lang.Message;
+import com.smallaswater.listener.SociatyCoreListener;
 import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.item.Item;
+
 /**
  * sociaty create command
+ * 
  * @作者 Zao_hon
  *
  */
@@ -64,6 +68,10 @@ public class CreateCommand implements ICommand {
 		if (plugin.getDataStorager().getSociaty(name) != null) {
 			Message.playerSendMessage(player, Message.getString("error_sociaty_exist"));
 			return true;
+		} else {
+			Item item = SociatyCoreListener.getSociatyCore();
+			item.setNamedTag(item.getNamedTag().putString("SociatyName", name));
+			player.getInventory().addItem(item);
 		}
 		return true;
 	}

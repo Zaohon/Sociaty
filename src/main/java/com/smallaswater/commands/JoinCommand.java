@@ -1,7 +1,10 @@
 package com.smallaswater.commands;
 
 import com.smallaswater.SociatyMainClass;
+import com.smallaswater.lang.Message;
+import com.smallaswater.sociaty.Sociaty;
 
+import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 
 /**
@@ -54,6 +57,27 @@ public class JoinCommand implements ICommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		return false;
+		if (args.length != 1) {
+			return false;
+		}
+		Player player = (Player) sender;
+		Sociaty sociaty = plugin.getDataStorager().getPlayerSociaty(player.getName());
+		if (sociaty != null) {
+			Message.playerSendMessage(player, Message.getString("error_player_sociaty_had_found"));
+		} else {
+			String name = args[0];
+			Sociaty s = plugin.getDataStorager().getPlayerSociaty(name);
+			if(s==null) {
+				Message.playerSendMessage(player, Message.getString("error_sociaty_non_exist"));
+			}else {
+				if(s.getApplicants().contains(player.getUniqueId())) {
+					Message.playerSendMessage(player, Message.getString("error_player_sociaty_had_applicanted"));
+				}else {
+					s.getApplicants().add(player.getUniqueId());
+					Message.playerSendMessage(player, Message.getString("error_player_sociaty_applicant"));
+				}
+			}
+		}
+		return true;
 	}
 }

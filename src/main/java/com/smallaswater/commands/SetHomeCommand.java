@@ -65,8 +65,8 @@ public class SetHomeCommand implements ICommand {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
 			return true;
 		}
-		PlayerClass playerClass = plugin.getPlayerClass(player.getUniqueId());
-		if (sociaty.hasPermissions(playerClass, sociaty.getGroupByPower(Power.SET_HOME))) {
+		PlayerClass playerClass = sociaty.getPlayerClassByName(player.getName());
+		if (sociaty.hasPermissions(playerClass, Power.SET_HOME)) {
 			sociaty.setPosition(player.getPosition());
 		} else {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_lack_permission"));

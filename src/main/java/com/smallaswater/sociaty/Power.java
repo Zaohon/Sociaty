@@ -2,13 +2,17 @@ package com.smallaswater.sociaty;
 
 public enum Power {
 	/**
-	 * 添加玩家
+	 * 同意玩家进会
 	 */
-	ADD_PLAYER("addplayer"),
+	ACCEPT_PLAYER("acceptplayer"),
 	/**
-	 * 移除玩家
+	 * 拒绝玩家进会
 	 */
-	REMOVE_PLAYER("removeplayer"),
+	DENY_PLAYER("denyplayer"),
+	/**
+	 * 踢出玩家
+	 */
+	KICK_PLAYER("kick"),
 	/**
 	 * 公会战争
 	 */
