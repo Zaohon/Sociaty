@@ -55,6 +55,6 @@ public class SociatyMainClass extends PluginBase {
 	}
 
 	public void Debug(String string) {
-		this.getLogger().info(string);
+		this.getLogger().info("[DEBUG]"+string);
 	}
 }

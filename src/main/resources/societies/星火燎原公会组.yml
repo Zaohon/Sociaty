@@ -28,5 +28,3 @@ groups:
   DENY_PLAYER: ADMIN
   KICK_PLAYER: ADMIN
   SOCIATY_WAR: ADMIN
-  tpAllplayer: ADMIN
-  setjoinmessage: ADMIN

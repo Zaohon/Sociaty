@@ -31,7 +31,6 @@ public class YamlStore implements IDataStore {
 		plugin.Debug("开始从Yaml读取公会..");
 		File folder = getSocietiesFolder();
 		for (File file : folder.listFiles()) {
-			plugin.Debug("开始加载公会" + file.getName());
 			Config config = new Config(file);
 			String sociatyName = config.getString("name");
 			int level = config.getInt("level");
@@ -52,7 +51,7 @@ public class YamlStore implements IDataStore {
 			sociaty.setJoinMessage(joinmessage);
 			sociaty.setPlayerSize(playerMaxSize);
 			societies.put(sociatyName, sociaty);
-			plugin.Debug("成功加载公会" + sociatyName);
+			plugin.Debug("已加载公会" + sociatyName);
 		}
 		plugin.Debug("共加载"+societies.size()+"个公会");
 		plugin.Debug("公会加载完成");
@@ -87,7 +86,7 @@ public class YamlStore implements IDataStore {
 	public void saveSociaty(Sociaty sociaty) {
 		String sociatyName = sociaty.getName();
 		societies.put(sociatyName, sociaty);
-		File sociatyFile = new File(getSocietiesFolder(), sociatyName);
+		File sociatyFile = new File(getSocietiesFolder(), sociatyName+".yml");
 		Config config = new Config(sociatyFile);
 		config.set("sociatyName", sociatyName);
 		config.set("level", sociaty.getLevel());
