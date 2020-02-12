@@ -67,13 +67,13 @@ public class JoinCommand implements ICommand {
 		} else {
 			String name = args[0];
 			Sociaty s = plugin.getDataStorager().getPlayerSociaty(name);
-			if(s==null) {
+			if (s == null) {
 				Message.playerSendMessage(player, Message.getString("error_sociaty_non_exist"));
-			}else {
-				if(s.getApplicants().contains(player.getUniqueId())) {
+			} else {
+				if (s.getApplicants().contains(player.getUniqueId())) {
 					Message.playerSendMessage(player, Message.getString("error_player_sociaty_had_applicanted"));
-				}else {
-					s.getApplicants().add(player.getUniqueId());
+				} else {
+					s.getApplicants().add(player.getName());
 					Message.playerSendMessage(player, Message.getString("error_player_sociaty_applicant"));
 				}
 			}

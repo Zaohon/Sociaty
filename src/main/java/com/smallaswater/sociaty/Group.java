@@ -11,11 +11,8 @@ public class Group {
 
 	private Power power;
 
-	public final static MemberLevel DEFAULT_LEVEL = MemberLevel.MEMBER;
-
 	public Group(Power power) {
-		this.power = power;
-		this.level = DEFAULT_LEVEL;
+		this(power, MemberLevel.getDefaultLevel());
 	}
 
 	public Group(Power power, MemberLevel level) {

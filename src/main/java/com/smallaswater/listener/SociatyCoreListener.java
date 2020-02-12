@@ -19,7 +19,6 @@ import cn.nukkit.utils.Config;
 public class SociatyCoreListener {
 	private SociatyMainClass plugin;
 
-
 	public SociatyCoreListener(SociatyMainClass plugin) {
 		this.plugin = plugin;
 		loadSociatyCore();
@@ -42,11 +41,11 @@ public class SociatyCoreListener {
 				String sociatyName = item.getNamedTag().getString("SOCIATYNAME");
 				// TODO 跟nbt扯上关系的都不是很会,这里是根据核心物品的nbt获取要创建公会的名字
 				Sociaty sociaty = new Sociaty(sociatyName, player.getName(), position);
-				sociaty.addPlayer(player.getName(), player.getName());
 				SociatyCreateEvent e = new SociatyCreateEvent(sociaty);
 				plugin.getServer().getPluginManager().callEvent(e);
 				if (!e.isCancelled()) {
-					plugin.getSociaties().put(sociatyName, sociaty);
+					plugin.getDataStorager().saveSociaty(sociaty);
+					// plugin.getSociaties().put(sociatyName, sociaty);
 					Message.playerSendMessage(player, Message.getString("sociaty_create_successfully"));
 				}
 			}
@@ -99,8 +98,9 @@ public class SociatyCoreListener {
 		}
 		return file;
 	}
-	
+
 	private static Item sociatyCore;
+
 	/**
 	 * 
 	 * @return 公会核心

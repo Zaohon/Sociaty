@@ -63,9 +63,8 @@ public class HomeCommand implements ICommand {
 		if (sociaty == null) {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
 		}else {
-			if(sociaty.hasPermissions(sociaty.getPlayerClassByName(player.getName()),Power.HOME))
-			player.teleport(sociaty.getHomePosition());
-			
+			if(sociaty.hasPermissions(player.getName(),Power.HOME))
+			player.teleport(sociaty.getHomeLocation());
 		}
 		return true;
 	}

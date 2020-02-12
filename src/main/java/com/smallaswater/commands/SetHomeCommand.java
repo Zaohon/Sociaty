@@ -65,9 +65,8 @@ public class SetHomeCommand implements ICommand {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
 			return true;
 		}
-		PlayerClass playerClass = sociaty.getPlayerClassByName(player.getName());
-		if (sociaty.hasPermissions(playerClass, Power.SET_HOME)) {
-			sociaty.setPosition(player.getPosition());
+		if (sociaty.hasPermissions(player.getName(), Power.SET_HOME)) {
+			sociaty.setHomeLocation(player.getLocation());
 		} else {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_lack_permission"));
 		}

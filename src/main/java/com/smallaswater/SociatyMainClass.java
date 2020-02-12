@@ -2,71 +2,59 @@ package com.smallaswater;
 
 import cn.nukkit.plugin.PluginBase;
 
+import com.smallaswater.commands.AceeptCommand;
 import com.smallaswater.commands.CommandDispatcher;
 import com.smallaswater.commands.CreateCommand;
-import com.smallaswater.data.DataStore;
-import com.smallaswater.players.PlayerClass;
-import com.smallaswater.sociaty.Sociaty;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import com.smallaswater.commands.HomeCommand;
+import com.smallaswater.commands.JoinCommand;
+import com.smallaswater.commands.LeaveCommand;
+import com.smallaswater.commands.SetHomeCommand;
+import com.smallaswater.data.IDataStore;
+import com.smallaswater.data.YamlStore;
 
 public class SociatyMainClass extends PluginBase {
 
-	private LinkedHashMap<String, Sociaty> societies = new LinkedHashMap<>();
-	/**
-	 * 用来以UUID保存所有公会成员 未来可能换个位置存放这个
-	 */
-	private Map<UUID, PlayerClass> playerClasses = new HashMap<UUID, PlayerClass>();
-
-	private DataStore dataStorager;
+	private IDataStore dataStorager;
 
 	private CommandDispatcher commandDispatcher;
 
 	@Override
 	public void onEnable() {
-		this.getLogger().info("公会加载成功");
-		this.getLogger().info("初始化中....");
+		this.getLogger().info("公会插件加载成功");
+		this.getLogger().info("初始化....");
 
+		this.saveDefaultConfig();
+		this.dataStorager = new YamlStore(this);
 		this.loadCommands();
-
 	}
 
 	private void loadCommands() {
 		commandDispatcher = new CommandDispatcher("Sociaty");
 		commandDispatcher.addCommand(new CreateCommand(this));
-
+		commandDispatcher.addCommand(new AceeptCommand(this));
+//		commandDispatcher.addCommand(new DenyCommand(this));
+		commandDispatcher.addCommand(new HomeCommand(this));
+		commandDispatcher.addCommand(new JoinCommand(this));
+		commandDispatcher.addCommand(new LeaveCommand(this));
+//		commandDispatcher.addCommand(new ListCommand(this));
+//		commandDispatcher.addCommand(new ReloadCommand(this));
+		commandDispatcher.addCommand(new SetHomeCommand(this));
+		this.getServer().getCommandMap().register("sociaty", commandDispatcher);
 	}
 
 	/**
-	 * @return 所有公会
+	 * 
+	 * @return
 	 */
-	public LinkedHashMap<String, Sociaty> getSociaties() {
-		return societies;
-	}
-
-	/**
-	 * @return 所有公会成员
-	 */
-	public Map<UUID, PlayerClass> getPlayerClasses() {
-		return playerClasses;
-	}
-
-	/**
-	 * @param 玩家的UUID
-	 * @return 获得公会成员
-	 */
-	public PlayerClass getPlayerClass(UUID uuid) {
-		return playerClasses.get(uuid);
-	}
-
-	public DataStore getDataStorager() {
+	public IDataStore getDataStorager() {
 		return dataStorager;
 	}
 
 	public void PR(String string) {
+		this.getLogger().info(string);
+	}
+
+	public void Debug(String string) {
 		this.getLogger().info(string);
 	}
 }

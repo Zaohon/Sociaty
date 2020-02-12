@@ -3,10 +3,7 @@ package com.smallaswater.data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-
-import com.smallaswater.SociatyMainClass;
-import com.smallaswater.players.PlayerClass;
+import java.sql.Statement;
 import com.smallaswater.sociaty.Sociaty;
 
 /**
@@ -15,13 +12,10 @@ import com.smallaswater.sociaty.Sociaty;
  * @作者 Zao_hon
  *
  */
-public abstract class DatabaseStore implements DataStore {
-
-	private SociatyMainClass plugin;
-
-	protected DatabaseStore(SociatyMainClass plugin) {
-		this.plugin = plugin;
-	}
+public abstract class DatabaseStore implements IDataStore {
+	private static String CREATE_SOCIETIES_TABLE = "CREATE TABLE IF NOT EXISTS SOCIETIES(Name NCHAR PRIMARY KEY NOT NULL , Description NCHAR , Level INT , Announcement NCHAR , Master NCHAR , CorePosition NCHAR , HomeLocation NCHAR )";
+	private static String CREATE_GROUPS_TABLE = "CREATE TABLE IF NOT EXISTS GROUPS(Name NCHAR PRIMARY KEY NOT NULL , AcceptPlayer INT , DENY_PLAYER INT)";
+	private static String CREATE_PLAYERS_TABLE = "CREATE TABLE IF NOT EXISTS PLAYERS(Name NCHAR , Society NCHAR , Level INT)";
 
 	protected abstract Connection setupConnection() throws SQLException;
 
@@ -56,16 +50,37 @@ public abstract class DatabaseStore implements DataStore {
 		return null;
 	}
 
-	@Override
-	public PlayerClass getPlayerClass(String playerName) {
-		// TODO Auto-generated method stub
-		return null;
+	protected void createSocietiesTable() {
+		try {
+			Connection connection = setupConnection();
+			Statement stat = connection.createStatement();
+			stat.execute(CREATE_SOCIETIES_TABLE);
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	@Override
-	public boolean isInSociaty(String playerName) {
-		// TODO Auto-generated method stub
-		return false;
+	protected void createGroupsTable() {
+		try {
+			Connection connection = setupConnection();
+			Statement stat = connection.createStatement();
+			stat.execute(CREATE_GROUPS_TABLE);
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void createPlayersTable() {
+		try {
+			Connection connection = setupConnection();
+			Statement stat = connection.createStatement();
+			stat.execute(CREATE_PLAYERS_TABLE);
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

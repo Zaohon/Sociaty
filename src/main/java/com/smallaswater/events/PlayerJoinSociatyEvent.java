@@ -1,24 +1,30 @@
 package com.smallaswater.events;
 
-import com.smallaswater.players.PlayerClass;
 import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.event.Cancellable;
 
 /**
  * 玩家加入公会事件
+ * 
  * @author Administrator
  */
 public class PlayerJoinSociatyEvent extends SociatyEvent implements Cancellable {
 
-	private PlayerClass playerClass;
+	private String target;
+	private String approver;
 
-	public PlayerJoinSociatyEvent(Sociaty sociaty, PlayerClass playerClass) {
+	public PlayerJoinSociatyEvent(Sociaty sociaty, String approver, String target) {
 		super(sociaty);
-		this.playerClass = playerClass;
+		this.target = target;
+		this.approver = approver;
 	}
 
-	public PlayerClass getPlayerClass() {
-		return playerClass;
+	public String getTarget() {
+		return target;
+	}
+
+	public String getApprover() {
+		return approver;
 	}
 }

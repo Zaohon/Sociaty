@@ -1,4 +1,11 @@
 eclipse.preferences.version=1
-encoding//src/main/java/com/smallaswater/SociatyMainClass.java=UTF-8
+encoding//src/main/java=UTF-8
+encoding//src/main/java/com/smallaswater/commands/CommandDispatcher.java=UTF-8
 encoding//src/main/java/com/smallaswater/lang/Message.java=UTF-8
+encoding//src/main/java/com/smallaswater/listener/SociatyCoreListener.java=UTF-8
+encoding//src/main/java/com/smallaswater/sociaty/Sociaty.java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/resources/config.yml=UTF-8
+encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8
+separateDerivedEncodings=true

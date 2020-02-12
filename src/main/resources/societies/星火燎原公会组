@@ -1,0 +1,32 @@
+name: "星火燎原公会组"
+level: 1
+master: "Zao_hon"
+playerMaxSize: 5
+description: "This is an example sociaty"
+announcement: "WE ARE THE BEST ! YEAH !"
+joinmessage: "Welcome to our party ! let's play !"
+homelocation:
+  x: 0
+  y: 0
+  z: 0
+  level: "world"
+  yaw:  15
+  pitch: 23
+coreposition:
+  x: 0
+  y: 0
+  z: 0
+  level: "world"
+applicants:
+  - sbsbsb
+members:
+  Zao_hon: ADMIN
+  qbw: MODERATOR
+  little_k: MEMBER
+groups:
+  ACCEPT_PLAYER: ADMIN
+  DENY_PLAYER: ADMIN
+  KICK_PLAYER: ADMIN
+  SOCIATY_WAR: ADMIN
+  tpAllplayer: ADMIN
+  setjoinmessage: ADMIN

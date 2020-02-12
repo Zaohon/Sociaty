@@ -61,7 +61,7 @@ public class AceeptCommand implements ICommand {
 		if (sociaty == null) {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
 		} else {
-			if (!sociaty.hasPermissions(sociaty.getPlayerClassByName(player.getName()), Power.ACCEPT_PLAYER)) {
+			if (!sociaty.hasPermissions(player.getName(), Power.ACCEPT_PLAYER)) {
 				Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_permission"));
 				return true;
 			}
@@ -73,7 +73,7 @@ public class AceeptCommand implements ICommand {
 					sociaty.getApplicants().remove(name);
 				} else {
 					sociaty.getApplicants().remove(name);
-					sociaty.addPlayer(player.getName(), name);
+					sociaty.acceptPlayer(player, name);
 					Message.playerSendMessage(player, Message.getString("sociaty_player_accept"));
 				}
 			}

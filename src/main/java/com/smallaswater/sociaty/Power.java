@@ -16,11 +16,11 @@ public enum Power {
 	/**
 	 * 公会战争
 	 */
-	SOCIATY_WAR("sociatyfight"),
+	SOCIATY_WAR("sociatywar"),
 	/**
-	 * 公会公告
+	 * 设置公会公告
 	 */
-	SOCIATY_BROADCAST("sociatybroadcast"),
+	SET_SOCIATY_ANNOUCEMENT("sociatyannoucement"),
 	/**
 	 * 设置加入公告
 	 */
@@ -30,7 +30,7 @@ public enum Power {
 	 */
 	TP_ALL_PLAYER("tpAllplayer"),
 	/**
-	 * 设置公会传动点
+	 * 设置公会传送点
 	 */
 	SET_HOME("sethome"),
 	/**

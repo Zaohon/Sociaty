@@ -1,6 +1,8 @@
 package com.smallaswater.sociaty;
+
 /**
  * 成员等级
+ * 
  * @作者 Zao_hon
  *
  */
@@ -8,15 +10,19 @@ public enum MemberLevel {
 	/**
 	 * 公会长
 	 */
-	ADMIN("admin", 2),
+	ADMIN("admin", 3),
 	/**
 	 * 管理员
 	 */
-	MODERATOR("moderator", 1),
+	MODERATOR("moderator", 2),
 	/**
 	 * 成员
 	 */
-	MEMBER("member", 0);
+	MEMBER("member", 1),
+	/**
+	 * 新人
+	 */	
+	NEWER("newer",0);
 
 	private String name;
 
@@ -34,12 +40,12 @@ public enum MemberLevel {
 	public int getLevel() {
 		return level;
 	}
-	
+
 	/**
 	 * 权限判断
 	 */
 	public boolean seniorThan(MemberLevel level) {
-		return this.level>=level.getLevel();
+		return this.level >= level.getLevel();
 	}
 
 	public static MemberLevel getByName(String name) {
@@ -58,5 +64,12 @@ public enum MemberLevel {
 			}
 		}
 		return null;
+	}
+
+	public static MemberLevel getDefaultLevel() {
+		return MemberLevel.NEWER;
+	}
+	public static MemberLevel getHighestLevel() {
+		return MemberLevel.ADMIN;
 	}
 }
