@@ -11,9 +11,11 @@ import com.smallaswater.commands.LeaveCommand;
 import com.smallaswater.commands.SetHomeCommand;
 import com.smallaswater.data.IDataStore;
 import com.smallaswater.data.YamlStore;
+import com.smallaswater.lang.Message;
 import com.smallaswater.listener.SociatyCoreListener;
 
 public class SociatyMainClass extends PluginBase {
+	private Message message;
 
 	private IDataStore dataStorager;
 
@@ -26,8 +28,9 @@ public class SociatyMainClass extends PluginBase {
 
 		this.saveDefaultConfig();
 		this.dataStorager = new YamlStore(this);
-		this.loadCommands();
+		this.message = new Message(this);
 		this.getServer().getPluginManager().registerEvents(new SociatyCoreListener(this), this);
+		this.loadCommands();
 	}
 
 	private void loadCommands() {
@@ -57,6 +60,9 @@ public class SociatyMainClass extends PluginBase {
 	}
 
 	public void Debug(String string) {
-		this.getLogger().info("[DEBUG]"+string);
+		this.getLogger().info("[DEBUG]" + string);
+	}
+	public Message getMessage() {
+		return message;
 	}
 }
