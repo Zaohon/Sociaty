@@ -1,6 +1,7 @@
 package com.smallaswater.data;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import com.smallaswater.sociaty.Group;
 import com.smallaswater.sociaty.MemberLevel;
 import com.smallaswater.sociaty.Power;
 import com.smallaswater.sociaty.Sociaty;
+import com.smallaswater.sociaty.SociatyArena;
 
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
@@ -44,8 +46,9 @@ public class YamlStore implements IDataStore {
 			List<String> applicants = config.getStringList("applicants");
 			List<Group> groups = loadGroupList(config.getSection("groups"));
 			Map<String, MemberLevel> members = getMemberMap(config.getSection("members"));
+			SociatyArena arena = loadSociatyArena(config.getSection("arena"));
 			Sociaty sociaty = new Sociaty(sociatyName, master, corePosition, homeLocation, level, applicants, members,
-					groups);
+					groups, arena);
 			sociaty.setAnnouncement(announcement);
 			sociaty.setDescription(description);
 			sociaty.setJoinMessage(joinmessage);
@@ -53,7 +56,7 @@ public class YamlStore implements IDataStore {
 			societies.put(sociatyName, sociaty);
 			plugin.Debug("已加载公会" + sociatyName);
 		}
-		plugin.Debug("共加载"+societies.size()+"个公会");
+		plugin.Debug("共加载" + societies.size() + "个公会");
 		plugin.Debug("公会加载完成");
 	}
 
@@ -63,7 +66,7 @@ public class YamlStore implements IDataStore {
 			plugin.PR("检测到societies文件夹不存在，正在创建");
 			file.mkdir();
 			plugin.PR("创建示例公会");
-			plugin.saveResource("societies/星火燎原公会组");
+			plugin.saveResource("societies/星火燎原公会组.yml");
 		}
 		return file;
 	}
@@ -86,7 +89,7 @@ public class YamlStore implements IDataStore {
 	public void saveSociaty(Sociaty sociaty) {
 		String sociatyName = sociaty.getName();
 		societies.put(sociatyName, sociaty);
-		File sociatyFile = new File(getSocietiesFolder(), sociatyName+".yml");
+		File sociatyFile = new File(getSocietiesFolder(), sociatyName + ".yml");
 		Config config = new Config(sociatyFile);
 		config.set("sociatyName", sociatyName);
 		config.set("level", sociaty.getLevel());
@@ -100,6 +103,8 @@ public class YamlStore implements IDataStore {
 		config.set("applicants", sociaty.getApplicants());
 		this.saveMembers(config.getSection("members"), sociaty.getMemberMap());
 		this.saveGroups(config.getSection("members"), sociaty.getGroups());
+		this.saveArena(config.getSection("arena"), sociaty.getArena());
+		config.save(sociatyFile);
 	}
 
 	private Location getLocation(ConfigSection sec) {
@@ -115,16 +120,6 @@ public class YamlStore implements IDataStore {
 		Double pitch = sec.getDouble("pitch", 0d);
 		return new Location(x, y, z, yaw, pitch, l);
 	}
-
-//	private List<PlayerClass> loadMemberList(ConfigSection sec, Sociaty sociaty) {
-//		List<PlayerClass> members = new LinkedList<PlayerClass>();
-//		for (String name : sec.getKeys()) {
-//			MemberLevel memberLevel = MemberLevel.getByName(sec.getString(name));
-//			PlayerClass p = new PlayerClass(name, memberLevel, sociaty);
-//			members.add(p);
-//		}
-//		return members;
-//	}
 
 	private Map<String, MemberLevel> getMemberMap(ConfigSection sec) {
 		Map<String, MemberLevel> members = new HashMap<String, MemberLevel>();
@@ -147,6 +142,21 @@ public class YamlStore implements IDataStore {
 		return groups;
 	}
 
+	private SociatyArena loadSociatyArena(ConfigSection sec) {
+		String level = sec.getString("level");
+		if (!plugin.getServer().isLevelLoaded(level)) {
+			plugin.getServer().loadLevel(level);
+		}
+		Level l = plugin.getServer().getLevelByName(level);
+		int minX = sec.getInt("minx");
+		int maxX = sec.getInt("maxx");
+		int minY = sec.getInt("miny");
+		int maxY = sec.getInt("maxy");
+		int minZ = sec.getInt("minz");
+		int maxZ = sec.getInt("maxz");
+		return new SociatyArena(minX, maxX, minY, maxY, minZ, maxZ, l);
+	}
+
 	private void savePosition(ConfigSection sec, Position pos) {
 		sec.set("x", pos.getX());
 		sec.set("y", pos.getY());
@@ -159,6 +169,16 @@ public class YamlStore implements IDataStore {
 		}
 	}
 
+	private void saveArena(ConfigSection sec, SociatyArena arena) {
+		sec.set("minx", arena.getMinX());
+		sec.set("maxx", arena.getMaxX());
+		sec.set("miny", arena.getMinY());
+		sec.set("maxy", arena.getMaxY());
+		sec.set("minz", arena.getMinZ());
+		sec.set("maxz", arena.getMaxZ());
+		sec.set("level", arena.getLevel().getName());
+	}
+
 	private void saveMembers(ConfigSection sec, Map<String, MemberLevel> members) {
 		for (Entry<String, MemberLevel> entry : members.entrySet()) {
 			sec.set(entry.getKey(), entry.getValue().getName());
@@ -167,7 +187,12 @@ public class YamlStore implements IDataStore {
 
 	private void saveGroups(ConfigSection sec, List<Group> groups) {
 		for (Group group : groups) {
-			sec.set(group.getPower().getName(), group.getLevel().getName());
+			sec.set(group.getPower().name(), group.getLevel().getName());
 		}
+	}
+
+	@Override
+	public Collection<Sociaty> getSociaties() {
+		return societies.values();
 	}
 }

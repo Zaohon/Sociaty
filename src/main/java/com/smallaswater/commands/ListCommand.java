@@ -3,12 +3,14 @@ package com.smallaswater.commands;
 import com.smallaswater.SociatyMainClass;
 
 import cn.nukkit.command.CommandSender;
+
 /**
  * sociaty list command
+ * 
  * @author 14027
  *
  */
-public class ListCommand implements ICommand{
+public class ListCommand implements ICommand {
 	private SociatyMainClass plugin;
 
 	public ListCommand(SociatyMainClass plugin) {
@@ -32,7 +34,7 @@ public class ListCommand implements ICommand{
 
 	@Override
 	public String[] getUsageString(CommandSender sender) {
-		return null;
+		return new String[] { "/s list" };
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class ListCommand implements ICommand{
 
 	@Override
 	public boolean canBeConsole() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -52,6 +54,11 @@ public class ListCommand implements ICommand{
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		return false;
+		sender.sendMessage("公会列表");
+		plugin.getDataStorager().getSociaties().forEach(sociaty -> {
+			sender.sendMessage(sociaty.toString());
+		});
+
+		return true;
 	}
 }

@@ -5,6 +5,14 @@ playerMaxSize: 5
 description: "This is an example sociaty"
 announcement: "WE ARE THE BEST ! YEAH !"
 joinmessage: "Welcome to our party ! let's play !"
+arena:
+  minx: 0
+  maxx: 0
+  miny: 0
+  maxy: 0
+  minz: 0
+  maxz: 0
+  level: world
 homelocation:
   x: 0
   y: 0

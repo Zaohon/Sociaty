@@ -5,14 +5,10 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import com.smallaswater.events.PlayerJoinSociatyEvent;
-import com.smallaswater.players.PlayerClass;
-
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Administrator
@@ -72,9 +68,9 @@ public class Sociaty {
 	/**
 	 * 领地
 	 */
-	private SociatyArena arena;
+	private final SociatyArena arena;
 
-	public Sociaty(String name, String master, final Position corePosition) {
+	public Sociaty(String name, String master, final Position corePosition, final SociatyArena arena) {
 		Map<String, MemberLevel> members = new HashMap<String, MemberLevel>();
 		members.put(master, MemberLevel.ADMIN);
 		this.name = name;
@@ -85,10 +81,11 @@ public class Sociaty {
 		this.applicants = new LinkedList<String>();
 		this.members = members;
 		this.groups = Group.getDefaultGroups();
+		this.arena = arena;
 	}
 
 	public Sociaty(String name, String master, final Position corePosition, Location homeLocation, int level,
-			List<String> applicants, Map<String, MemberLevel> members, List<Group> groups) {
+			List<String> applicants, Map<String, MemberLevel> members, List<Group> groups, final SociatyArena arena) {
 		this.name = name;
 		this.master = master;
 		this.corePosition = corePosition;
@@ -97,7 +94,7 @@ public class Sociaty {
 		this.applicants = applicants;
 		this.members = members;
 		this.groups = groups;
-
+		this.arena = arena;
 	}
 
 	public String getName() {
@@ -154,10 +151,6 @@ public class Sociaty {
 
 	public SociatyArena getArena() {
 		return arena;
-	}
-
-	public void setArena(SociatyArena arena) {
-		this.arena = arena;
 	}
 
 	public boolean hasPermissions(String name, Power power) {
@@ -219,6 +212,11 @@ public class Sociaty {
 
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "公会名:" + name + " 等级:" + level + " 会长:" + master;
 	}
 
 //	public boolean runSetting(String playerName, Group group) {

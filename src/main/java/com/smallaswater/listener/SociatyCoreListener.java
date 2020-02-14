@@ -7,16 +7,19 @@ import com.smallaswater.SociatyMainClass;
 import com.smallaswater.events.SociatyCreateEvent;
 import com.smallaswater.lang.Message;
 import com.smallaswater.sociaty.Sociaty;
+import com.smallaswater.sociaty.SociatyArena;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 
-public class SociatyCoreListener {
+public class SociatyCoreListener implements Listener {
 	private SociatyMainClass plugin;
 
 	public SociatyCoreListener(SociatyMainClass plugin) {
@@ -29,6 +32,7 @@ public class SociatyCoreListener {
 	 * 
 	 * @param event
 	 */
+	@EventHandler
 	public void onCorePlaced(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
@@ -39,13 +43,11 @@ public class SociatyCoreListener {
 			} else {
 				Position position = block;
 				String sociatyName = item.getNamedTag().getString("SOCIATYNAME");
-				// TODO 跟nbt扯上关系的都不是很会,这里是根据核心物品的nbt获取要创建公会的名字
-				Sociaty sociaty = new Sociaty(sociatyName, player.getName(), position);
-				SociatyCreateEvent e = new SociatyCreateEvent(sociaty);
+				Sociaty sociaty = new Sociaty(sociatyName, player.getName(), position, new SociatyArena(position));
+				SociatyCreateEvent e = new SociatyCreateEvent(sociaty, player);
 				plugin.getServer().getPluginManager().callEvent(e);
 				if (!e.isCancelled()) {
 					plugin.getDataStorager().saveSociaty(sociaty);
-					// plugin.getSociaties().put(sociatyName, sociaty);
 					Message.playerSendMessage(player, Message.getString("sociaty_create_successfully"));
 				}
 			}
@@ -57,8 +59,8 @@ public class SociatyCoreListener {
 	 * 
 	 * @param event
 	 */
+	@EventHandler
 	public void onCoreDroped(PlayerDropItemEvent event) {
-		// Player player = event.getPlayer();
 		Item item = event.getItem();
 		if (isCore(item))
 			event.setCancelled(true);
@@ -71,8 +73,8 @@ public class SociatyCoreListener {
 		int id = config.getInt("id");
 		List<String> lores = config.getStringList("lores");
 		Item item = new Item(id);
-		item.getNamedTag().setName(name);
-		// TODO 呃这边item的设置我不会你补一下
+		item.setCustomName(name);
+		item.setLore(lores.toArray(new String[lores.size()]));
 
 		sociatyCore = item;
 	}
@@ -92,7 +94,7 @@ public class SociatyCoreListener {
 	}
 
 	private File getSociatyCoreFile() {
-		File file = new File(plugin.getDataFolder(), "sociatycore");
+		File file = new File(plugin.getDataFolder(), "sociatycore.yml");
 		if (!file.exists()) {
 			plugin.saveResource("sociatycore.yml", false);
 		}

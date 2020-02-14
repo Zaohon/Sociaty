@@ -3,11 +3,10 @@ package com.smallaswater.commands;
 import com.smallaswater.SociatyMainClass;
 import com.smallaswater.lang.Message;
 import com.smallaswater.listener.SociatyCoreListener;
-import com.smallaswater.sociaty.Sociaty;
-
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.item.Item;
+import cn.nukkit.nbt.tag.CompoundTag;
 
 /**
  * sociaty create command
@@ -29,7 +28,7 @@ public class CreateCommand implements ICommand {
 
 	@Override
 	public String[] getAliases() {
-		return new String[] { "c" };
+		return new String[] { "cre" };
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class CreateCommand implements ICommand {
 
 	@Override
 	public String[] getUsageString(CommandSender sender) {
-		return null;
+		return new String[] { "/s create [公会名字]" };
 	}
 
 	@Override
@@ -60,19 +59,25 @@ public class CreateCommand implements ICommand {
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
-		if (args.length != 2) {
+		if (args.length != 1) {
 			return false;
 		}
 		String name = args[0];
-		String desc = args[1];
+		if (plugin.getDataStorager().getPlayerSociaty(player.getName()) != null) {
+			Message.playerSendMessage(player, Message.getString("error_self_already_have_sociaty"));
+			return true;
+		}
+
 		if (plugin.getDataStorager().getSociaty(name) != null) {
 			Message.playerSendMessage(player, Message.getString("error_sociaty_exist"));
 			return true;
-		} else {
-			Item item = SociatyCoreListener.getSociatyCore();
-			item.setNamedTag(item.getNamedTag().putString("SociatyName", name));
-			player.getInventory().addItem(item);
 		}
+		Item item = SociatyCoreListener.getSociatyCore();
+		CompoundTag tag = item.getNamedTag();
+		tag.putString("SOCIATYNAME", name);
+		item.setNamedTag(tag);
+		player.getInventory().addItem(item);
+		Message.playerSendMessage(player, Message.getString("sociaty_create_ready"));
 		return true;
 	}
 

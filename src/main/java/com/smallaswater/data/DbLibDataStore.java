@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,6 +96,12 @@ public class DbLibDataStore implements IDataStore {
 	public void saveSociaty(Sociaty sociaty) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Collection<Sociaty> getSociaties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

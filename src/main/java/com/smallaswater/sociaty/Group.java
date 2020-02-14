@@ -20,15 +20,6 @@ public class Group {
 		this.level = level;
 	}
 
-	public static Power getPowerByName(String name) {
-		for (Power power : Power.values()) {
-			if (power.getName().equals(name)) {
-				return power;
-			}
-		}
-		return null;
-	}
-
 	public MemberLevel getLevel() {
 		return level;
 	}

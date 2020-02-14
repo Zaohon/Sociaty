@@ -11,6 +11,7 @@ import com.smallaswater.commands.LeaveCommand;
 import com.smallaswater.commands.SetHomeCommand;
 import com.smallaswater.data.IDataStore;
 import com.smallaswater.data.YamlStore;
+import com.smallaswater.listener.SociatyCoreListener;
 
 public class SociatyMainClass extends PluginBase {
 
@@ -26,6 +27,7 @@ public class SociatyMainClass extends PluginBase {
 		this.saveDefaultConfig();
 		this.dataStorager = new YamlStore(this);
 		this.loadCommands();
+		this.getServer().getPluginManager().registerEvents(new SociatyCoreListener(this), this);
 	}
 
 	private void loadCommands() {

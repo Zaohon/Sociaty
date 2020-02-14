@@ -10,19 +10,23 @@ public enum MemberLevel {
 	/**
 	 * 公会长
 	 */
-	ADMIN("admin", 3),
+	ADMIN("admin", 4),
 	/**
 	 * 管理员
 	 */
-	MODERATOR("moderator", 2),
+	MODERATOR("moderator", 3),
+	/**
+	 * 精英
+	 */
+	ELITE("elite", 2),
 	/**
 	 * 成员
 	 */
 	MEMBER("member", 1),
 	/**
 	 * 新人
-	 */	
-	NEWER("newer",0);
+	 */
+	NEWER("newer", 0);
 
 	private String name;
 
@@ -69,6 +73,7 @@ public enum MemberLevel {
 	public static MemberLevel getDefaultLevel() {
 		return MemberLevel.NEWER;
 	}
+
 	public static MemberLevel getHighestLevel() {
 		return MemberLevel.ADMIN;
 	}
