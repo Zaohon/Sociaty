@@ -27,31 +27,32 @@ public class ReloadCommand implements ICommand {
 
 	@Override
 	public String getPermission() {
-		return null;
+		return "SociatyAdmin.Reload";
 	}
 
 	@Override
 	public String[] getUsageString(CommandSender sender) {
-		return null;
+		return new String[] {"/sociaty reload [config/societies]"};
 	}
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "重载Config或公会";
 	}
 
 	@Override
 	public boolean canBeConsole() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean canBeCommandBlock() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
+		
 		return false;
 	}
 }

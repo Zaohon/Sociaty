@@ -37,9 +37,9 @@ public class SociatyCoreListener implements Listener {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		Item item = event.getItem();
-		if (isCore(item)) {
+		if (isSociatyCore(item)) {
 			if (plugin.getDataStorager().getPlayerSociaty(player.getName()) != null) {
-				Message.playerSendMessage(player, Message.getString("error_player_sociaty_had_found"));
+				Message.playerSendMessage(player, Message.getString("error_self_already_have_sociaty"));
 			} else {
 				Position position = block;
 				String sociatyName = item.getNamedTag().getString("SOCIATYNAME");
@@ -47,8 +47,10 @@ public class SociatyCoreListener implements Listener {
 				SociatyCreateEvent e = new SociatyCreateEvent(sociaty, player);
 				plugin.getServer().getPluginManager().callEvent(e);
 				if (!e.isCancelled()) {
+					plugin.getDataStorager().addSociaty(sociaty);
 					plugin.getDataStorager().saveSociaty(sociaty);
-					Message.playerSendMessage(player, Message.getString("sociaty_create_successfully"));
+					Message.playerSendMessage(player,
+							Message.getString("sociaty_create_successfully", "<sociaty>", sociatyName));
 				}
 			}
 		}
@@ -62,8 +64,15 @@ public class SociatyCoreListener implements Listener {
 	@EventHandler
 	public void onCoreDroped(PlayerDropItemEvent event) {
 		Item item = event.getItem();
-		if (isCore(item))
+		plugin.Debug("droping");
+		if (isSociatyCore(item))
 			event.setCancelled(true);
+	}
+
+	public boolean isSociatyCore(Item item) {
+		if (item == null || item.isNull() || !item.hasCompoundTag())
+			return false;
+		return item.getNamedTag().getBoolean("ISCORE");
 	}
 
 	public void loadSociatyCore() {
@@ -72,25 +81,11 @@ public class SociatyCoreListener implements Listener {
 		String name = config.getString("name");
 		int id = config.getInt("id");
 		List<String> lores = config.getStringList("lores");
-		Item item = new Item(id);
+		Item item = Item.get(id);
 		item.setCustomName(name);
 		item.setLore(lores.toArray(new String[lores.size()]));
-
+		item.setNamedTag(item.getNamedTag().putBoolean("ISCORE", true));
 		sociatyCore = item;
-	}
-
-	private boolean isCore(Item item) {
-		if (!item.getName().equals(sociatyCore.getName()) || item.getId() != sociatyCore.getId())
-			return false;
-		String[] lores1 = item.getLore();
-		String[] lores2 = sociatyCore.getLore();
-		if (lores1.length != lores2.length)
-			return false;
-		for (int i = 0; i < lores1.length; i++) {
-			if (!lores1[1].equals(lores2[i]))
-				return false;
-		}
-		return true;
 	}
 
 	private File getSociatyCoreFile() {
@@ -108,6 +103,6 @@ public class SociatyCoreListener implements Listener {
 	 * @return 公会核心
 	 */
 	public static Item getSociatyCore() {
-		return sociatyCore;
+		return sociatyCore.clone();
 	}
 }

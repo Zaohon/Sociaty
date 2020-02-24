@@ -88,23 +88,44 @@ public class YamlStore implements IDataStore {
 	@Override
 	public void saveSociaty(Sociaty sociaty) {
 		String sociatyName = sociaty.getName();
-		societies.put(sociatyName, sociaty);
 		File sociatyFile = new File(getSocietiesFolder(), sociatyName + ".yml");
-		Config config = new Config(sociatyFile);
-		config.set("sociatyName", sociatyName);
+		Config config = new Config(Config.YAML);
+
+		config.set("name", sociatyName);
 		config.set("level", sociaty.getLevel());
 		config.set("master", sociaty.getMaster());
 		config.set("playerMaxSize", sociaty.getPlayerSize());
 		config.set("description", sociaty.getDescription());
 		config.set("announcement", sociaty.getAnnouncement());
 		config.set("joinmessage", sociaty.getJoinMessage());
-		this.savePosition(config.getSection("coreposition"), sociaty.getCorePosition());
-		this.savePosition(config.getSection("homelocation"), sociaty.getHomeLocation());
+		this.setCorePosition(config, sociaty.getCorePosition());
+		this.setHomeLocation(config, sociaty.getHomeLocation());
 		config.set("applicants", sociaty.getApplicants());
-		this.saveMembers(config.getSection("members"), sociaty.getMemberMap());
-		this.saveGroups(config.getSection("members"), sociaty.getGroups());
-		this.saveArena(config.getSection("arena"), sociaty.getArena());
+		this.setMembers(config, sociaty.getMemberMap());
+		this.setGroups(config, sociaty.getGroups());
+		this.setArena(config, sociaty.getArena());
 		config.save(sociatyFile);
+	}
+
+	@Override
+	public void addSociaty(Sociaty sociaty) {
+		societies.put(sociaty.getName(), sociaty);
+	}
+
+	@Override
+	public void deleteSociaty(Sociaty sociaty) {
+		societies.remove(sociaty.getName());
+	}
+
+	@Override
+	public Collection<Sociaty> getSociaties() {
+		return societies.values();
+	}
+
+	@Override
+	public void reloadSocieties() {
+		this.societies.clear();
+		this.loadSocieties();
 	}
 
 	private Location getLocation(ConfigSection sec) {
@@ -157,42 +178,43 @@ public class YamlStore implements IDataStore {
 		return new SociatyArena(minX, maxX, minY, maxY, minZ, maxZ, l);
 	}
 
-	private void savePosition(ConfigSection sec, Position pos) {
-		sec.set("x", pos.getX());
-		sec.set("y", pos.getY());
-		sec.set("z", pos.getZ());
-		sec.set("level", pos.getLevel().getName());
-		if (pos instanceof Location) {
-			Location loc = (Location) pos;
-			sec.set("yaw", loc.getX());
-			sec.set("pitch", loc.getX());
-		}
+	private void setCorePosition(Config sec, Position pos) {
+		sec.set("coreposition.x", pos.getX());
+		sec.set("coreposition.y", pos.getY());
+		sec.set("coreposition.z", pos.getZ());
+		sec.set("coreposition.level", pos.getLevel().getName());
 	}
 
-	private void saveArena(ConfigSection sec, SociatyArena arena) {
-		sec.set("minx", arena.getMinX());
-		sec.set("maxx", arena.getMaxX());
-		sec.set("miny", arena.getMinY());
-		sec.set("maxy", arena.getMaxY());
-		sec.set("minz", arena.getMinZ());
-		sec.set("maxz", arena.getMaxZ());
-		sec.set("level", arena.getLevel().getName());
+	private void setHomeLocation(Config sec, Location loc) {
+		sec.set("homelocation.x", loc.getX());
+		sec.set("homelocation.y", loc.getY());
+		sec.set("homelocation.z", loc.getZ());
+		sec.set("homelocation.level", loc.getLevel().getName());
+		sec.set("homelocation.yaw", loc.getX());
+		sec.set("homelocation.pitch", loc.getX());
+
 	}
 
-	private void saveMembers(ConfigSection sec, Map<String, MemberLevel> members) {
+	private void setArena(Config config, SociatyArena arena) {
+		config.set("arena.minx", arena.getMinX());
+		config.set("arena.maxx", arena.getMaxX());
+		config.set("arena.miny", arena.getMinY());
+		config.set("arena.maxy", arena.getMaxY());
+		config.set("arena.minz", arena.getMinZ());
+		config.set("arena.maxz", arena.getMaxZ());
+		config.set("arena.level", arena.getLevel().getName());
+	}
+
+	private void setMembers(Config config, Map<String, MemberLevel> members) {
 		for (Entry<String, MemberLevel> entry : members.entrySet()) {
-			sec.set(entry.getKey(), entry.getValue().getName());
+			config.set("members." + entry.getKey(), entry.getValue().getName());
 		}
 	}
 
-	private void saveGroups(ConfigSection sec, List<Group> groups) {
+	private void setGroups(Config config, List<Group> groups) {
 		for (Group group : groups) {
-			sec.set(group.getPower().name(), group.getLevel().getName());
+			config.set("groups." + group.getPower().name(), group.getLevel().getName());
 		}
 	}
 
-	@Override
-	public Collection<Sociaty> getSociaties() {
-		return societies.values();
-	}
 }

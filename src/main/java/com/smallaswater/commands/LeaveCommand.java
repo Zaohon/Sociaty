@@ -1,15 +1,24 @@
 package com.smallaswater.commands;
 
-import com.smallaswater.SociatyMainClass;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.smallaswater.SociatyMainClass;
+import com.smallaswater.lang.Message;
+import com.smallaswater.sociaty.Sociaty;
+
+import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+
 /**
- * sociaty leave command
- * @author 14027
+ * 离开公会
+ * 
+ * @作者 Zao_hon
  *
  */
-public class LeaveCommand implements ICommand{
+public class LeaveCommand implements ICommand {
 	private SociatyMainClass plugin;
+	private Set<String> confirmPlayers = new HashSet<String>();
 
 	public LeaveCommand(SociatyMainClass plugin) {
 		this.plugin = plugin;
@@ -37,7 +46,7 @@ public class LeaveCommand implements ICommand{
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "离开公会";
 	}
 
 	@Override
@@ -52,6 +61,21 @@ public class LeaveCommand implements ICommand{
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		return false;
+		Player player = (Player) sender;
+		Sociaty sociaty = plugin.getDataStorager().getPlayerSociaty(player.getName());
+		if (sociaty == null) {
+			Message.playerSendMessage(player, Message.getString("error_self_have_no_sociaty"));
+		} else {
+			if (!confirmPlayers.contains(player.getName())) {
+				Message.playerSendMessage(player, Message.getString("sociaty_leave_self_once"));
+			} else {
+				confirmPlayers.add(player.getName());
+				sociaty.removeMember(player.getName());
+				plugin.getDataStorager().saveSociaty(sociaty);
+				Message.playerSendMessage(player, Message.getString("sociaty_self_leave_sociaty_twice"));
+				sociaty.broadcast(Message.getString("sociaty_leave_other", "<player>", player.getName()));
+			}
+		}
+		return true;
 	}
 }

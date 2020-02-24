@@ -1,5 +1,9 @@
 package com.smallaswater.sociaty;
-
+/**
+ * 公会权限表
+ * @作者 Zao_hon
+ *
+ */
 public enum Power {
 	/**
 	 * 同意玩家进会
@@ -20,7 +24,7 @@ public enum Power {
 	/**
 	 * 设置公会公告
 	 */
-	SET_SOCIATY_ANNOUCEMENT,
+	SET_ANNOUCEMENT,
 	/**
 	 * 设置公会描述
 	 */

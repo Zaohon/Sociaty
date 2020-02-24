@@ -62,9 +62,14 @@ public class HomeCommand implements ICommand {
 		Sociaty sociaty = plugin.getDataStorager().getPlayerSociaty(player.getName());
 		if (sociaty == null) {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
-		}else {
-			if(sociaty.hasPermissions(player.getName(),Power.HOME))
-			player.teleport(sociaty.getHomeLocation());
+		} else {
+			if (!sociaty.hasPermissions(player.getName(), Power.HOME)) {
+				Message.playerSendMessage(player, Message.getString("error_self_lack_power"));
+			} else {
+				player.teleport(sociaty.getHomeLocation());
+				Message.playerSendMessage(player, Message.getString("sociaty_home_gohome"));
+			}
+
 		}
 		return true;
 	}

@@ -43,7 +43,7 @@ public class CreateCommand implements ICommand {
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "§2创建公会";
 	}
 
 	@Override
@@ -72,6 +72,7 @@ public class CreateCommand implements ICommand {
 			Message.playerSendMessage(player, Message.getString("error_sociaty_exist"));
 			return true;
 		}
+
 		Item item = SociatyCoreListener.getSociatyCore();
 		CompoundTag tag = item.getNamedTag();
 		tag.putString("SOCIATYNAME", name);

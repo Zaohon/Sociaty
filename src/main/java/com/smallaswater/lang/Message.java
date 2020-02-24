@@ -34,7 +34,7 @@ import cn.nukkit.command.CommandSender;
  */
 public class Message {
 	private static SociatyMainClass plugin;
-	private static String PREFIX = "[SociatyMainClass]";
+	private static String PREFIX = "[Sociaty]";
 	private static Map<String, String> mTranslationTable;
 	private static String[] sources = new String[] { "zh_cn.lang"};
 	private static String[] mValidEncodings = new String[] { "UTF-16", "UTF-16BE", "UTF-16LE", "UTF-8", "ISO646-US",
@@ -42,11 +42,11 @@ public class Message {
 
 	public Message(SociatyMainClass plugin) {
 		Message.plugin = plugin;
-		exportDefaultLanguage(plugin);
+		exportDefaultlanguage(plugin);
 	}
 
-	public static void exportDefaultLanguage(SociatyMainClass plugin) {
-		File folder = new File(plugin.getDataFolder(), "Lang");
+	public static void exportDefaultlanguage(SociatyMainClass plugin) {
+		File folder = new File(plugin.getDataFolder(), "lang");
 		if (!folder.exists())
 			folder.mkdirs();
 
@@ -54,21 +54,21 @@ public class Message {
 			File dest = new File(folder, source);
 			if (!dest.exists()) {
 				plugin.getServer().getConsoleSender().sendMessage(PREFIX + "创建初始语言文件" + source);
-				plugin.saveResource("Lang/" + source, false);
+				plugin.saveResource("lang/" + source, false);
 			} else {
-				if (!injectChanges(plugin.getResource("Lang/" + source),
-						new File(plugin.getDataFolder(), "Lang/" + source))) {
-					plugin.saveResource("Lang/" + source, true);
+				if (!injectChanges(plugin.getResource("lang/" + source),
+						new File(plugin.getDataFolder(), "lang/" + source))) {
+					plugin.saveResource("lang/" + source, true);
 				}
 			}
-			mTranslationTable = loadLang(dest);
+			mTranslationTable = loadlang(dest);
 		}
 	}
 
 	public static boolean injectChanges(InputStream source, File onDisk) {
 		try {
-			Map<String, String> sourceMap = loadLang(source, "UTF-8");
-			Map<String, String> diskMap = loadLang(onDisk);
+			Map<String, String> sourceMap = loadlang(source, "UTF-8");
+			Map<String, String> diskMap = loadlang(onDisk);
 
 			Map<String, String> newEntries = new HashMap<String, String>();
 			for (String key : sourceMap.keySet()) {
@@ -94,13 +94,13 @@ public class Message {
 
 	}
 
-	public static Map<String, String> loadLang(File file) {
+	public static Map<String, String> loadlang(File file) {
 
 		Map<String, String> map = null;
 		try {
 			FileInputStream instream = new FileInputStream(file);
 			String encoding = detectEncoding(file);
-			map = loadLang(instream, encoding);
+			map = loadlang(instream, encoding);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -109,7 +109,7 @@ public class Message {
 		return map;
 	}
 
-	public static Map<String, String> loadLang(InputStream stream, String encoding) throws IOException {
+	public static Map<String, String> loadlang(InputStream stream, String encoding) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream, encoding));
 		while (reader.ready()) {
@@ -154,8 +154,8 @@ public class Message {
 		return "UTF-8";
 	}
 
-	public void setLanguage(String lang) {
-		File file = new File(plugin.getDataFolder(), "Lang/" + lang + ".lang");
+	public void setlanguage(String lang) {
+		File file = new File(plugin.getDataFolder(), "lang/" + lang + ".lang");
 		if (!file.exists()) {
 			plugin.PR(lang + "不存在,已创建一个默认语言文件,可自行翻译成本国语言");
 			try {
@@ -166,9 +166,9 @@ public class Message {
 		}
 
 		if (file.exists()) {
-			InputStream resource = plugin.getResource("Lang/zh_cn.lang");
+			InputStream resource = plugin.getResource("lang/zh_cn.lang");
 			injectChanges(resource, file);
-			mTranslationTable = loadLang(file);
+			mTranslationTable = loadlang(file);
 		} else {
 			plugin.PR("无法加载" + lang + "文件,或许出了什么大问题");
 		}

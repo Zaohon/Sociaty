@@ -104,4 +104,22 @@ public class DbLibDataStore implements IDataStore {
 		return null;
 	}
 
+	@Override
+	public void addSociaty(Sociaty sociaty) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteSociaty(Sociaty sociaty) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reloadSocieties() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

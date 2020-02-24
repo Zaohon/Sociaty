@@ -2,34 +2,26 @@ package com.smallaswater.commands;
 
 import com.smallaswater.SociatyMainClass;
 import com.smallaswater.lang.Message;
-import com.smallaswater.players.PlayerClass;
-import com.smallaswater.sociaty.Power;
 import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 
-/**
- * sociaty sethome command
- * 
- * @author 14027
- *
- */
-public class SetHomeCommand implements ICommand {
+public class ApplicantsCommand implements ICommand {
 	private SociatyMainClass plugin;
 
-	public SetHomeCommand(SociatyMainClass plugin) {
+	public ApplicantsCommand(SociatyMainClass plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public String getName() {
-		return "sethome";
+		return "applicants";
 	}
 
 	@Override
 	public String[] getAliases() {
-		return new String[] { "sh" };
+		return new String[] { "app" };
 	}
 
 	@Override
@@ -39,12 +31,12 @@ public class SetHomeCommand implements ICommand {
 
 	@Override
 	public String[] getUsageString(CommandSender sender) {
-		return null;
+		return new String[] { "/sociaty applicants" };
 	}
 
 	@Override
 	public String getDescription() {
-		return "设置公会";
+		return "查看所有申请入会者";
 	}
 
 	@Override
@@ -65,13 +57,11 @@ public class SetHomeCommand implements ICommand {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
 			return true;
 		}
-		if (sociaty.hasPermissions(player.getName(), Power.SET_HOME)) {
-			sociaty.setHomeLocation(player.getLocation());
-			Message.playerSendMessage(player, Message.getString("sociaty_home_sethome"));
-		} else {
-			Message.playerSendMessage(player, Message.getString("error_player_sociaty_lack_power"));
-		}
-		return true;
+		
+		player.sendMessage("申請者有");
+		sociaty.getApplicants().forEach(player::sendMessage);
+		
+		return false;
 	}
 
 }

@@ -13,4 +13,9 @@ public interface IDataStore {
 
 	void saveSociaty(Sociaty sociaty);
 
+	void addSociaty(Sociaty sociaty);
+
+	void deleteSociaty(Sociaty sociaty);
+	
+	void reloadSocieties();
 }

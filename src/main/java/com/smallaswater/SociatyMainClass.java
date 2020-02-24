@@ -3,11 +3,15 @@ package com.smallaswater;
 import cn.nukkit.plugin.PluginBase;
 
 import com.smallaswater.commands.AceeptCommand;
+import com.smallaswater.commands.ApplicantsCommand;
 import com.smallaswater.commands.CommandDispatcher;
 import com.smallaswater.commands.CreateCommand;
+import com.smallaswater.commands.DenyCommand;
 import com.smallaswater.commands.HomeCommand;
 import com.smallaswater.commands.JoinCommand;
 import com.smallaswater.commands.LeaveCommand;
+import com.smallaswater.commands.ListCommand;
+import com.smallaswater.commands.ReloadCommand;
 import com.smallaswater.commands.SetHomeCommand;
 import com.smallaswater.data.IDataStore;
 import com.smallaswater.data.YamlStore;
@@ -34,23 +38,20 @@ public class SociatyMainClass extends PluginBase {
 	}
 
 	private void loadCommands() {
-		commandDispatcher = new CommandDispatcher("Sociaty");
+		commandDispatcher = new CommandDispatcher("Sociaty","公会插件 made by Zao_hon",new String[] {"s"});
+		commandDispatcher.addCommand(new ListCommand(this));
 		commandDispatcher.addCommand(new CreateCommand(this));
-		commandDispatcher.addCommand(new AceeptCommand(this));
-//		commandDispatcher.addCommand(new DenyCommand(this));
-		commandDispatcher.addCommand(new HomeCommand(this));
 		commandDispatcher.addCommand(new JoinCommand(this));
-		commandDispatcher.addCommand(new LeaveCommand(this));
-//		commandDispatcher.addCommand(new ListCommand(this));
-//		commandDispatcher.addCommand(new ReloadCommand(this));
+		commandDispatcher.addCommand(new AceeptCommand(this));
+		commandDispatcher.addCommand(new DenyCommand(this));
+		commandDispatcher.addCommand(new HomeCommand(this));
 		commandDispatcher.addCommand(new SetHomeCommand(this));
+		commandDispatcher.addCommand(new LeaveCommand(this));
+		commandDispatcher.addCommand(new ApplicantsCommand(this));
+commandDispatcher.addCommand(new ReloadCommand(this));
 		this.getServer().getCommandMap().register("sociaty", commandDispatcher);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public IDataStore getDataStorager() {
 		return dataStorager;
 	}
@@ -62,6 +63,7 @@ public class SociatyMainClass extends PluginBase {
 	public void Debug(String string) {
 		this.getLogger().info("[DEBUG]" + string);
 	}
+
 	public Message getMessage() {
 		return message;
 	}

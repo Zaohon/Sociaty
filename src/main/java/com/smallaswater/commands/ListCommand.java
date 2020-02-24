@@ -39,7 +39,7 @@ public class ListCommand implements ICommand {
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "查看所有公会";
 	}
 
 	@Override
@@ -58,7 +58,6 @@ public class ListCommand implements ICommand {
 		plugin.getDataStorager().getSociaties().forEach(sociaty -> {
 			sender.sendMessage(sociaty.toString());
 		});
-
 		return true;
 	}
 }

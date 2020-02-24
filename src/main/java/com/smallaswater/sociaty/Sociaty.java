@@ -47,7 +47,6 @@ public class Sociaty {
 	/**
 	 * 公会成员
 	 */
-	// private LinkedList<PlayerClass> members;
 	private Map<String, MemberLevel> members;
 	/**
 	 * 权限列表
@@ -60,7 +59,7 @@ public class Sociaty {
 	/**
 	 * 描述
 	 */
-	private String description = "";
+	private String description = "THIS IS A DEFAULT DESCRPITION";
 	/**
 	 * 加入提示
 	 */
@@ -153,13 +152,6 @@ public class Sociaty {
 		return arena;
 	}
 
-	public boolean hasPermissions(String name, Power power) {
-		if (!members.keySet().contains(name)) {
-			return false;
-		}
-		return members.get(name).seniorThan(getGroupByPower(power).getLevel());
-	}
-
 	public Group getGroupByPower(Power power) {
 		for (Group group : groups) {
 			if (group.getPower() == power) {
@@ -214,30 +206,30 @@ public class Sociaty {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "公会名:" + name + " 等级:" + level + " 会长:" + master;
+	public void broadcast(String str) {
+		this.members.keySet().forEach(key -> {
+			Player player = Server.getInstance().getPlayerExact(key);
+			if (player != null && player.isOnline())
+				player.sendMessage(str);
+		});
 	}
 
-//	public boolean runSetting(String playerName, Group group) {
-//		if (playerName.equals(master)) {
-//			return true;
-//		} else {
-//			PlayerClass playerClass = getPlayerClassByName(playerName);
-//			if (playerClass != null) {
-//
-//			}
-//		}
-//		return false;
-//	}
+	public boolean hasPermissions(String name, Power power) {
+		if (!members.keySet().contains(name)) {
+			return false;
+		}
+		return members.get(name).seniorThan(getGroupByPower(power).getLevel());
+	}
 
-//	public PlayerClass getPlayerClassByName(String name) {
-//		for (PlayerClass playerClass : members.keySet()) {
-//			if (playerClass.getName().equals(name)) {
-//				return playerClass;
-//			}
-//		}
-//		return null;
-//	}
+	public boolean removeMember(String playerName) {
+		return members.remove(playerName) != null;
+	}
 
+	@Override
+	public String toString() {
+		return "公会名:" + name + " 等级:" + level + " 会长:" + master + " 简介:"+description;
+	}
+	
+	
+	
 }
