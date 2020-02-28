@@ -71,10 +71,10 @@ public class JoinCommand implements ICommand {
 				Message.playerSendMessage(player, Message.getString("error_sociaty_non_exist"));
 			} else {
 				if (s.getApplicants().contains(player.getName())) {
-					Message.playerSendMessage(player, Message.getString("error_player_sociaty_had_applicanted"));
+					Message.playerSendMessage(player, Message.getString("error_self_had_applicanted"));
 				} else {
 					s.getApplicants().add(player.getName());
-					Message.playerSendMessage(player, Message.getString("error_player_sociaty_applicant"));
+					Message.playerSendMessage(player, Message.getString("error_self_sociaty_applicant"));
 				}
 			}
 		}

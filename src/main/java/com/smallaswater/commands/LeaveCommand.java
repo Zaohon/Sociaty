@@ -72,7 +72,7 @@ public class LeaveCommand implements ICommand {
 				confirmPlayers.add(player.getName());
 				sociaty.removeMember(player.getName());
 				plugin.getDataStorager().saveSociaty(sociaty);
-				Message.playerSendMessage(player, Message.getString("sociaty_self_leave_sociaty_twice"));
+				Message.playerSendMessage(player, Message.getString("sociaty_leave_self_twice"));
 				sociaty.broadcast(Message.getString("sociaty_leave_other", "<player>", player.getName()));
 			}
 		}

@@ -5,44 +5,57 @@ package com.smallaswater.sociaty;
  *
  */
 public enum Power {
+
+	
 	/**
 	 * 同意玩家进会
 	 */
-	ACCEPT_PLAYER,
+	ACCEPT_PLAYER(MemberLevel.ADMIN),
 	/**
 	 * 拒绝玩家进会
 	 */
-	DENY_PLAYER,
+	DENY_PLAYER(MemberLevel.ADMIN),
 	/**
 	 * 踢出玩家
 	 */
-	KICK_PLAYER,
+	KICK_PLAYER(MemberLevel.ADMIN),
 	/**
 	 * 发起公会战争
 	 */
-	SOCIATY_WAR,
+	SOCIATY_WAR(MemberLevel.ADMIN),
 	/**
 	 * 设置公会公告
 	 */
-	SET_ANNOUCEMENT,
+	SET_ANNOUCEMENT(MemberLevel.ADMIN),
 	/**
 	 * 设置公会描述
 	 */
-	SET_DESCRIPTION,
+	SET_DESCRIPTION(MemberLevel.ADMIN),
 	/**
 	 * 设置加入公告
 	 */
-	SET_JOIN_MESSAGE,
+	SET_JOIN_MESSAGE(MemberLevel.ADMIN),
 	/**
 	 * 公会召集
 	 */
-	TP_ALL_PLAYER,
+	TP_ALL_PLAYER(MemberLevel.ADMIN),
 	/**
 	 * 设置公会传送点
 	 */
-	SET_HOME,
+	SET_HOME(MemberLevel.ADMIN),
 	/**
 	 * 回到公会传送点
 	 */
-	HOME;
+	HOME(MemberLevel.NEWER);
+	
+	private MemberLevel defaultLevel;
+	
+	Power(MemberLevel defaultLevel){
+		this.defaultLevel = defaultLevel;
+	}
+	public MemberLevel getDefaultLevel() {
+		return defaultLevel;
+	}
+	
+	
 }

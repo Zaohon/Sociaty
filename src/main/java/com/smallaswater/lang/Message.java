@@ -183,7 +183,8 @@ public class Message {
 		String value = mTranslationTable.get(key);
 		if (value == null) {
 			plugin.getServer().getConsoleSender().sendMessage(PREFIX + "翻译表缺少" + key);
-			throw new MissingResourceException("", "", key);
+//			throw new MissingResourceException("", "", key);
+			return key;
 		}
 		return value;
 

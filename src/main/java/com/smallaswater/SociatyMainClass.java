@@ -9,6 +9,7 @@ import com.smallaswater.commands.CreateCommand;
 import com.smallaswater.commands.DenyCommand;
 import com.smallaswater.commands.HomeCommand;
 import com.smallaswater.commands.JoinCommand;
+import com.smallaswater.commands.KickCommand;
 import com.smallaswater.commands.LeaveCommand;
 import com.smallaswater.commands.ListCommand;
 import com.smallaswater.commands.ReloadCommand;
@@ -48,7 +49,8 @@ public class SociatyMainClass extends PluginBase {
 		commandDispatcher.addCommand(new SetHomeCommand(this));
 		commandDispatcher.addCommand(new LeaveCommand(this));
 		commandDispatcher.addCommand(new ApplicantsCommand(this));
-commandDispatcher.addCommand(new ReloadCommand(this));
+		commandDispatcher.addCommand(new KickCommand(this));
+		commandDispatcher.addCommand(new ReloadCommand(this));
 		this.getServer().getCommandMap().register("sociaty", commandDispatcher);
 	}
 

@@ -5,6 +5,8 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import com.smallaswater.events.PlayerJoinSociatyEvent;
+import com.smallaswater.lang.Message;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -185,25 +187,85 @@ public class Sociaty {
 		return groups;
 	}
 
-	public boolean acceptPlayer(Player player, String target) {
+	public boolean acceptPlayer(String target) {
+		return this.acceptPlayer(target, "unknow");
+	}
+
+	public boolean acceptPlayer(String target, String approver) {
 		if (target == null || target.equals(""))
 			return false;
-		if (!members.keySet().contains(player.getName()) || members.keySet().contains(target)) {
+		PlayerJoinSociatyEvent event = new PlayerJoinSociatyEvent(this, approver, target);
+		Server.getInstance().getPluginManager().callEvent(event);
+		if (!event.isCancelled()) {
+			applicants.remove(target);
+			members.put(target, MemberLevel.getDefaultLevel());
+			return true;
+		}
+		return false;
+	}
+
+	public boolean denyPlayer(String target) {
+		return this.denyPlayer(target, "unknow");
+	}
+
+	public boolean denyPlayer(String target, String refuser) {
+		if (target == null || target.equals(""))
+			return false;
+		return applicants.remove(target);
+	}
+
+	public boolean kickPlayer(String target) {
+		return this.kickPlayer(target, "unknow");
+	}
+
+	public boolean kickPlayer(String target, String kicker) {
+		if (target == null || target.equals(""))
+			return false;
+		return members.remove(target) != null;
+	}
+
+	public boolean runPower(Player player, Power power) {
+		return this.runPower(player, power, null);
+	}
+
+	public boolean runPower(Player player, Power power, String target) {
+		if (!hasPermissions(player.getName(), power)) {
+			Message.playerSendMessage(player, Message.getString("error_sociaty_player_no_permission"));
 			return false;
 		}
-		if (!applicants.contains(target)) {
+		switch (power) {
+		case ACCEPT_PLAYER:
+			return this.acceptPlayer(target, player.getName());
+		case DENY_PLAYER:
+			return this.denyPlayer(target, player.getName());
+		case KICK_PLAYER:
+			return this.kickPlayer(target, player.getName());
+		case SET_ANNOUCEMENT:
+			this.setAnnouncement(target);
+			return true;
+		case SET_DESCRIPTION:
+			this.setDescription(target);
+			return true;
+		case SET_JOIN_MESSAGE:
+			this.setJoinMessage(target);
+			return true;
+		case TP_ALL_PLAYER:
+			for (String member : members.keySet()) {
+				Player m = Server.getInstance().getPlayer(member);
+				if (member.equals(player.getName()))
+					continue;
+				if (m != null && m.isOnline()) {
+					m.teleport(player.getLocation());
+				}
+			}
+			return true;
+		case SET_HOME:
+			this.setHomeLocation(player.getLocation());
+			return true;
+		default:
 			return false;
 		}
 
-		if (hasPermissions(player.getName(), Power.ACCEPT_PLAYER)) {
-			PlayerJoinSociatyEvent event = new PlayerJoinSociatyEvent(this, player.getName(), target);
-			Server.getInstance().getPluginManager().callEvent(event);
-			if (!event.isCancelled())
-				members.put(target, MemberLevel.getDefaultLevel());
-		} else {
-
-		}
-		return true;
 	}
 
 	public void broadcast(String str) {
@@ -227,9 +289,7 @@ public class Sociaty {
 
 	@Override
 	public String toString() {
-		return "公会名:" + name + " 等级:" + level + " 会长:" + master + " 简介:"+description;
+		return "公会名:" + name + " 等级:" + level + " 会长:" + master + " 简介:" + description;
 	}
-	
-	
-	
+
 }

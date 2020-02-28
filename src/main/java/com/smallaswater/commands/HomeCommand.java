@@ -61,7 +61,7 @@ public class HomeCommand implements ICommand {
 		Player player = (Player) sender;
 		Sociaty sociaty = plugin.getDataStorager().getPlayerSociaty(player.getName());
 		if (sociaty == null) {
-			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
+			Message.playerSendMessage(player, Message.getString("error_self_have_no_sociaty"));
 		} else {
 			if (!sociaty.hasPermissions(player.getName(), Power.HOME)) {
 				Message.playerSendMessage(player, Message.getString("error_self_lack_power"));

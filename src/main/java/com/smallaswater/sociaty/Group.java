@@ -39,7 +39,7 @@ public class Group {
 	public static LinkedList<Group> getDefaultGroups() {
 		LinkedList<Group> groups = new LinkedList<Group>();
 		for (Power power : Power.values()) {
-			Group group = new Group(power);
+			Group group = new Group(power, power.getDefaultLevel());
 			groups.add(group);
 		}
 		return groups;
