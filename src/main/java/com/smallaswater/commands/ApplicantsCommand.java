@@ -58,10 +58,13 @@ public class ApplicantsCommand implements ICommand {
 			return true;
 		}
 		
-		player.sendMessage("申請者有");
-		sociaty.getApplicants().forEach(player::sendMessage);
-		
-		return false;
+		if(sociaty.getApplicants().isEmpty()) {
+			player.sendMessage("§a§l无申请者");
+		}else {
+			player.sendMessage("§a§l申請者有");
+			sociaty.getApplicants().forEach(player::sendMessage);
+		}
+		return true;
 	}
 
 }

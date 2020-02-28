@@ -68,7 +68,7 @@ public class KickCommand implements ICommand {
 			return true;
 		}
 		if (!sociaty.containMember(name)) {
-			Message.playerSendMessage(player, Message.getString("error_other_no_applicanted"));
+			Message.playerSendMessage(player, Message.getString("error_other_no_in_sociaty"));
 			return true;
 		}
 		if (sociaty.kickPlayer(name,player.getName())) {
