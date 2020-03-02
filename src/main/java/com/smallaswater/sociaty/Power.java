@@ -1,12 +1,12 @@
 package com.smallaswater.sociaty;
+
 /**
  * 公会权限表
+ * 
  * @作者 Zao_hon
  *
  */
 public enum Power {
-
-	
 	/**
 	 * 同意玩家进会
 	 */
@@ -44,18 +44,22 @@ public enum Power {
 	 */
 	SET_HOME(MemberLevel.ADMIN),
 	/**
+	 * 领取公会任务
+	 */
+	GET_TASK(MemberLevel.ADMIN),
+	/**
 	 * 回到公会传送点
 	 */
 	HOME(MemberLevel.NEWER);
-	
+
 	private MemberLevel defaultLevel;
-	
-	Power(MemberLevel defaultLevel){
+
+	Power(MemberLevel defaultLevel) {
 		this.defaultLevel = defaultLevel;
 	}
+
 	public MemberLevel getDefaultLevel() {
 		return defaultLevel;
 	}
-	
-	
+
 }
