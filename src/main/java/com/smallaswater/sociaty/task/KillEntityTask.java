@@ -3,8 +3,12 @@ package com.smallaswater.sociaty.task;
 import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.player.PlayerInteractEntityEvent;
+import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
 
 /**
@@ -12,10 +16,10 @@ import cn.nukkit.item.Item;
  * @作者 Zao_hon
  *
  */
-public abstract class DigBlockTask extends SociatyTask {
+public abstract class KillEntityTask extends SociatyTask {
 	protected final int itemID;
 
-	protected DigBlockTask(Sociaty sociaty, final int itemID) {
+	protected KillEntityTask(Sociaty sociaty, final int itemID) {
 		super(sociaty);
 		this.itemID = itemID;
 		this.setName("挖方块的任务");
@@ -23,10 +27,8 @@ public abstract class DigBlockTask extends SociatyTask {
 	}
 
 	@EventHandler
-	public void onPlayerDigOre(BlockBreakEvent event) {
-		Player player = event.getPlayer();
-		if (sociaty.containMember(player.getName()) && event.getBlock().getId() == Item.STONE) {
-			this.completeOnce();
-		}
+	public void onKillEntity(PlayerInteractEntityEvent event) {
+		
+		
 	}
 }

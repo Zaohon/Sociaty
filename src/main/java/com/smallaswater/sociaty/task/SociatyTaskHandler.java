@@ -10,14 +10,18 @@ import com.smallaswater.SociatyMainClass;
 import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.event.HandlerList;
-
+/**
+ * 
+ * @作者 Zao_hon
+ *
+ */
 public class SociatyTaskHandler {
 	private static SociatyMainClass plugin;
 	private static Map<String, Class<? extends SociatyTask>> stringTasks = new HashMap<String, Class<? extends SociatyTask>>();
 	private static Map<TaskType, Class<? extends SociatyTask>> typeTasks = new HashMap<TaskType, Class<? extends SociatyTask>>();
 
 	public static SociatyTask getRandomTask(Sociaty sociaty) {
-		String[] keys = stringTasks.values().toArray(new String[stringTasks.size()]);
+		String[] keys = stringTasks.keySet().toArray(new String[stringTasks.size()]);
 		String k = keys[(int) Math.random() * keys.length];
 		return addTask(k, sociaty);
 	}
@@ -25,8 +29,8 @@ public class SociatyTaskHandler {
 	public static SociatyTask addTask(String name, Sociaty sociaty) {
 		Class<? extends SociatyTask> clazz = stringTasks.get(name);
 		try {
-			Constructor<? extends SociatyTask> constructor = clazz.getConstructor();
-			SociatyTask task = constructor.newInstance();
+			Constructor<? extends SociatyTask> constructor = clazz.getConstructor(Sociaty.class);
+			SociatyTask task = constructor.newInstance(sociaty);
 			sociaty.addTask(task);
 			plugin.getServer().getPluginManager().registerEvents(task, plugin);
 			return task;
@@ -40,8 +44,8 @@ public class SociatyTaskHandler {
 	public static SociatyTask addTask(TaskType type, Sociaty sociaty) {
 		Class<? extends SociatyTask> clazz = typeTasks.get(type);
 		try {
-			Constructor<? extends SociatyTask> constructor = clazz.getConstructor();
-			SociatyTask task = constructor.newInstance();
+			Constructor<? extends SociatyTask> constructor = clazz.getConstructor(Sociaty.class);
+			SociatyTask task = constructor.newInstance(sociaty);
 			sociaty.addTask(task);
 			plugin.getServer().getPluginManager().registerEvents(task, plugin);
 			return task;

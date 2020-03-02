@@ -68,8 +68,8 @@ public class LeaveCommand implements ICommand {
 		} else {
 			if (!confirmPlayers.contains(player.getName())) {
 				Message.playerSendMessage(player, Message.getString("sociaty_leave_self_once"));
-			} else {
 				confirmPlayers.add(player.getName());
+			} else {
 				sociaty.removeMember(player.getName());
 				plugin.getDataStorager().saveSociaty(sociaty);
 				Message.playerSendMessage(player, Message.getString("sociaty_leave_self_twice"));

@@ -32,7 +32,7 @@ public class GetTaskCommand implements ICommand{
 
 	@Override
 	public String[] getUsageString(CommandSender sender) {
-		return new String[] {"/sc getTask"};
+		return new String[] {"/sc gettask"};
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class GetTaskCommand implements ICommand{
 				Message.playerSendMessage(player, Message.getString("error_self_lack_power"));
 			}
 			SociatyTask task = sociaty.getRamdomTask();
-			Message.playerSendMessage(player, "");
+			Message.playerSendMessage(player, "公会获得"+task.getName()+"任务");
 		}
 		return true;
 		

@@ -7,6 +7,7 @@ import com.smallaswater.commands.ApplicantsCommand;
 import com.smallaswater.commands.CommandDispatcher;
 import com.smallaswater.commands.CreateCommand;
 import com.smallaswater.commands.DenyCommand;
+import com.smallaswater.commands.GetTaskCommand;
 import com.smallaswater.commands.HomeCommand;
 import com.smallaswater.commands.JoinCommand;
 import com.smallaswater.commands.KickCommand;
@@ -14,6 +15,7 @@ import com.smallaswater.commands.LeaveCommand;
 import com.smallaswater.commands.ListCommand;
 import com.smallaswater.commands.ReloadCommand;
 import com.smallaswater.commands.SetHomeCommand;
+import com.smallaswater.commands.TasksCommand;
 import com.smallaswater.data.IDataStore;
 import com.smallaswater.data.YamlStore;
 import com.smallaswater.lang.Message;
@@ -34,14 +36,13 @@ public class SociatyMainClass extends PluginBase {
 		this.getLogger().info("初始化....");
 
 		SociatyTaskHandler.init(this);
-		
+
 		this.saveDefaultConfig();
 		this.dataStorager = new YamlStore(this);
 		this.message = new Message(this);
 		this.getServer().getPluginManager().registerEvents(new SociatyCoreListener(this), this);
 		this.loadCommands();
-		
-		
+
 	}
 
 	private void loadCommands() {
@@ -57,6 +58,8 @@ public class SociatyMainClass extends PluginBase {
 		commandDispatcher.addCommand(new ApplicantsCommand(this));
 		commandDispatcher.addCommand(new KickCommand(this));
 		commandDispatcher.addCommand(new ReloadCommand(this));
+		commandDispatcher.addCommand(new GetTaskCommand(this));
+		commandDispatcher.addCommand(new TasksCommand(this));
 		this.getServer().getCommandMap().register("sociaty", commandDispatcher);
 	}
 

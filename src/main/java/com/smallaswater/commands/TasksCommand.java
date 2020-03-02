@@ -2,8 +2,8 @@ package com.smallaswater.commands;
 
 import com.smallaswater.SociatyMainClass;
 import com.smallaswater.lang.Message;
-import com.smallaswater.sociaty.Power;
 import com.smallaswater.sociaty.Sociaty;
+import com.smallaswater.sociaty.task.SociatyTask;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
@@ -59,12 +59,11 @@ public class TasksCommand implements ICommand {
 			Message.playerSendMessage(player, Message.getString("error_player_sociaty_no_found"));
 			return true;
 		}
-		if (sociaty.hasPermissions(player.getName(), Power.SET_HOME)) {
-			sociaty.setHomeLocation(player.getLocation());
-			Message.playerSendMessage(player, Message.getString("sociaty_home_sethome"));
-		} else {
-			Message.playerSendMessage(player, Message.getString("error_player_sociaty_lack_power"));
+		for (SociatyTask task : sociaty.getTasks()) {
+			player.sendMessage(
+					task.getName() + " " + task.getDescription() + " " + task.getDoneTime() + "/" + task.getMaxTime());
 		}
+
 		return true;
 	}
 

@@ -3,7 +3,11 @@ package com.smallaswater.sociaty.task;
 import com.smallaswater.sociaty.Sociaty;
 
 import cn.nukkit.event.Listener;
-
+/**
+ * 
+ * @作者 Zao_hon
+ *
+ */
 public abstract class SociatyTask implements Listener {
 	protected String name = "未知的任务";
 	protected String description = "无描述";
