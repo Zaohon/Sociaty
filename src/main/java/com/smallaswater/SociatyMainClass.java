@@ -18,6 +18,7 @@ import com.smallaswater.data.IDataStore;
 import com.smallaswater.data.YamlStore;
 import com.smallaswater.lang.Message;
 import com.smallaswater.listener.SociatyCoreListener;
+import com.smallaswater.sociaty.task.SociatyTaskHandler;
 
 public class SociatyMainClass extends PluginBase {
 	private Message message;
@@ -28,18 +29,23 @@ public class SociatyMainClass extends PluginBase {
 
 	@Override
 	public void onEnable() {
+		instance = this;
 		this.getLogger().info("公会插件加载成功");
 		this.getLogger().info("初始化....");
 
+		SociatyTaskHandler.init(this);
+		
 		this.saveDefaultConfig();
 		this.dataStorager = new YamlStore(this);
 		this.message = new Message(this);
 		this.getServer().getPluginManager().registerEvents(new SociatyCoreListener(this), this);
 		this.loadCommands();
+		
+		
 	}
 
 	private void loadCommands() {
-		commandDispatcher = new CommandDispatcher("Sociaty","公会插件 made by Zao_hon",new String[] {"s"});
+		commandDispatcher = new CommandDispatcher("Sociaty", "公会插件 made by Zao_hon", new String[] { "s" });
 		commandDispatcher.addCommand(new ListCommand(this));
 		commandDispatcher.addCommand(new CreateCommand(this));
 		commandDispatcher.addCommand(new JoinCommand(this));
@@ -68,5 +74,11 @@ public class SociatyMainClass extends PluginBase {
 
 	public Message getMessage() {
 		return message;
+	}
+
+	private static SociatyMainClass instance;
+
+	public static SociatyMainClass getInstance() {
+		return instance;
 	}
 }

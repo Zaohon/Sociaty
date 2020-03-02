@@ -7,12 +7,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
 import com.smallaswater.SociatyMainClass;
 import com.smallaswater.sociaty.Group;
 import com.smallaswater.sociaty.MemberLevel;
 import com.smallaswater.sociaty.Power;
 import com.smallaswater.sociaty.Sociaty;
 import com.smallaswater.sociaty.SociatyArena;
+import com.smallaswater.sociaty.task.SociatyTask;
+import com.smallaswater.sociaty.task.SociatyTaskHandler;
 
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
@@ -37,7 +41,7 @@ public class YamlStore implements IDataStore {
 			String sociatyName = config.getString("name");
 			int level = config.getInt("level");
 			String master = config.getString("master");
-			int playerMaxSize = config.getInt("playerMaxSize");
+			int memberMaxSize = config.getInt("memberMaxSize");
 			String description = config.getString("description");
 			String announcement = config.getString("announcement");
 			String joinmessage = config.getString("joinmessage");
@@ -52,7 +56,8 @@ public class YamlStore implements IDataStore {
 			sociaty.setAnnouncement(announcement);
 			sociaty.setDescription(description);
 			sociaty.setJoinMessage(joinmessage);
-			sociaty.setPlayerSize(playerMaxSize);
+			sociaty.setMemberSize(memberMaxSize);
+			this.loadTasks(config, sociaty);
 			societies.put(sociatyName, sociaty);
 			plugin.Debug("已加载公会" + sociatyName);
 		}
@@ -63,9 +68,9 @@ public class YamlStore implements IDataStore {
 	private File getSocietiesFolder() {
 		File file = new File(plugin.getDataFolder(), "societies");
 		if (!file.exists()) {
-			plugin.PR("检测到societies文件夹不存在，正在创建");
+			plugin.Debug("检测到societies文件夹不存在，正在创建");
 			file.mkdir();
-			plugin.PR("创建示例公会");
+			plugin.Debug("创建示例公会");
 			plugin.saveResource("societies/星火燎原公会组.yml");
 		}
 		return file;
@@ -90,11 +95,10 @@ public class YamlStore implements IDataStore {
 		String sociatyName = sociaty.getName();
 		File sociatyFile = new File(getSocietiesFolder(), sociatyName + ".yml");
 		Config config = new Config(Config.YAML);
-
 		config.set("name", sociatyName);
 		config.set("level", sociaty.getLevel());
 		config.set("master", sociaty.getMaster());
-		config.set("playerMaxSize", sociaty.getPlayerSize());
+		config.set("memberMaxSize", sociaty.getMemberSize());
 		config.set("description", sociaty.getDescription());
 		config.set("announcement", sociaty.getAnnouncement());
 		config.set("joinmessage", sociaty.getJoinMessage());
@@ -104,6 +108,7 @@ public class YamlStore implements IDataStore {
 		this.setMembers(config, sociaty.getMemberMap());
 		this.setGroups(config, sociaty.getGroups());
 		this.setArena(config, sociaty.getArena());
+		this.saveTasks(config, sociaty.getTasks());
 		config.save(sociatyFile);
 	}
 
@@ -178,6 +183,15 @@ public class YamlStore implements IDataStore {
 		return new SociatyArena(minX, maxX, minY, maxY, minZ, maxZ, l);
 	}
 
+	private void loadTasks(Config sec, Sociaty sociaty) {
+		for (String key : sec.getSection("tasks").getKeys()) {
+			int v = sec.getInt("tasks." + key);
+			SociatyTask task = SociatyTaskHandler.addTask(key, sociaty);
+			task.setDoneTime(v);
+			task.checkComplete();
+		}
+	}
+
 	private void setCorePosition(Config sec, Position pos) {
 		sec.set("coreposition.x", pos.getX());
 		sec.set("coreposition.y", pos.getY());
@@ -214,6 +228,14 @@ public class YamlStore implements IDataStore {
 	private void setGroups(Config config, List<Group> groups) {
 		for (Group group : groups) {
 			config.set("groups." + group.getPower().name(), group.getLevel().getName());
+		}
+	}
+
+	private void saveTasks(Config config, Set<SociatyTask> tasks) {
+		for (SociatyTask task : tasks) {
+			String name = SociatyTaskHandler.findTaskName(task.getClass());
+			int doneTime = task.getDoneTime();
+			config.set("tasks." + name, doneTime);
 		}
 	}
 

@@ -5,12 +5,15 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import com.smallaswater.events.PlayerJoinSociatyEvent;
-import com.smallaswater.lang.Message;
+import com.smallaswater.sociaty.task.SociatyTask;
+import com.smallaswater.sociaty.task.SociatyTaskHandler;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Administrator
@@ -41,7 +44,7 @@ public class Sociaty {
 	/**
 	 * 公会成员上限
 	 */
-	private int playerSize = 5;
+	private int memberSize = 5;
 	/**
 	 * 申请成员
 	 */
@@ -70,6 +73,12 @@ public class Sociaty {
 	 * 领地
 	 */
 	private final SociatyArena arena;
+
+	/**
+	 * 公会任务
+	 */
+	// private SociatyTasks tasks;
+	private Set<SociatyTask> tasks = new HashSet<SociatyTask>();
 
 	public Sociaty(String name, String master, final Position corePosition, final SociatyArena arena) {
 		Map<String, MemberLevel> members = new HashMap<String, MemberLevel>();
@@ -110,12 +119,16 @@ public class Sociaty {
 		this.level = level;
 	}
 
-	public int getPlayerSize() {
-		return playerSize;
+	public int getMemberSize() {
+		return memberSize;
 	}
 
-	public void setPlayerSize(int playerSize) {
-		this.playerSize = playerSize;
+	public void setMemberSize(int memberSize) {
+		this.memberSize = memberSize;
+	}
+
+	public void addMemberSize(int adder) {
+		this.memberSize += adder;
 	}
 
 	public String getJoinMessage() {
@@ -224,50 +237,6 @@ public class Sociaty {
 		return members.remove(target) != null;
 	}
 
-	public boolean runPower(Player player, Power power) {
-		return this.runPower(player, power, null);
-	}
-
-	public boolean runPower(Player player, Power power, String target) {
-		if (!hasPermissions(player.getName(), power)) {
-			Message.playerSendMessage(player, Message.getString("error_sociaty_player_no_permission"));
-			return false;
-		}
-		switch (power) {
-		case ACCEPT_PLAYER:
-			return this.acceptPlayer(target, player.getName());
-		case DENY_PLAYER:
-			return this.denyPlayer(target, player.getName());
-		case KICK_PLAYER:
-			return this.kickPlayer(target, player.getName());
-		case SET_ANNOUCEMENT:
-			this.setAnnouncement(target);
-			return true;
-		case SET_DESCRIPTION:
-			this.setDescription(target);
-			return true;
-		case SET_JOIN_MESSAGE:
-			this.setJoinMessage(target);
-			return true;
-		case TP_ALL_PLAYER:
-			for (String member : members.keySet()) {
-				Player m = Server.getInstance().getPlayer(member);
-				if (member.equals(player.getName()))
-					continue;
-				if (m != null && m.isOnline()) {
-					m.teleport(player.getLocation());
-				}
-			}
-			return true;
-		case SET_HOME:
-			this.setHomeLocation(player.getLocation());
-			return true;
-		default:
-			return false;
-		}
-
-	}
-
 	public void broadcast(String str) {
 		this.members.keySet().forEach(key -> {
 			Player player = Server.getInstance().getPlayerExact(key);
@@ -285,6 +254,22 @@ public class Sociaty {
 
 	public boolean removeMember(String playerName) {
 		return members.remove(playerName) != null;
+	}
+
+	public Set<SociatyTask> getTasks() {
+		return tasks;
+	}
+
+	public void addTask(SociatyTask task) {
+		tasks.add(task);
+	}
+
+	public void taskComple(SociatyTask task) {
+
+	}
+
+	public SociatyTask getRamdomTask() {
+		return SociatyTaskHandler.getRandomTask(this);
 	}
 
 	@Override
