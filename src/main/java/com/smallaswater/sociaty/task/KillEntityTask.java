@@ -2,13 +2,8 @@ package com.smallaswater.sociaty.task;
 
 import com.smallaswater.sociaty.Sociaty;
 
-import cn.nukkit.Player;
-import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.player.PlayerInteractEntityEvent;
-import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
 
 /**
@@ -28,7 +23,6 @@ public abstract class KillEntityTask extends SociatyTask {
 
 	@EventHandler
 	public void onKillEntity(PlayerInteractEntityEvent event) {
-		
-		
+
 	}
 }
